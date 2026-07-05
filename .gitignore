@@ -1,0 +1,8 @@
+node_modules/
+dist/
+*.tsbuildinfo
+.DS_Store
+*.log
+.vercel/
+# Keep original personal photos local. Optimized public copies live in public/images.
+us/
