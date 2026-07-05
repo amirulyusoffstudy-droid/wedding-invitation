@@ -92,6 +92,17 @@ https://wa.me/?text=Jemputan%20untuk%20Keluarga%20Ahmad%3A%20https%3A%2F%2Famiru
 No environment variables, paid features, dynamic routes, or `vercel.json` are
 required.
 
+## GitHub Pages
+
+The included GitHub Actions workflow deploys `main` to:
+
+```text
+https://amirulyusoffstudy-droid.github.io/wedding-invitation/
+```
+
+It builds with `VITE_BASE_PATH=/wedding-invitation/`, so images and JavaScript
+work correctly beneath the repository subpath.
+
 ## Privacy
 
 Anything committed under `public` or `src/data/wedding.ts` is publicly

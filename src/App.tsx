@@ -114,7 +114,7 @@ export default function App() {
 
   return <div className="app">
     {!opened && <div className={`cover ${opening ? "opening" : ""}`}>
-      <div className="cover-photo" aria-hidden="true" />
+      <div className="cover-photo" aria-hidden="true" style={{ backgroundImage: `linear-gradient(rgba(27,24,58,.3), rgba(28,25,62,.78)), url("${wedding.images.hero}")` }} />
       <div className="fairytale-sparkles" aria-hidden="true"><i>✦</i><i>✧</i><i>✦</i><i>✧</i></div>
       <div className="cover-card">
         <span className="cover-kicker">Walimatul Urus</span>

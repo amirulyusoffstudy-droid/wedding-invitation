@@ -1,4 +1,6 @@
 // Replace every value containing "PLACEHOLDER" before publishing.
+const publicAsset = (filename: string) => `${import.meta.env.BASE_URL}images/${filename}`;
+
 export const wedding = {
   couple: {
     shortNames: "Amirul & Erni",
@@ -63,12 +65,12 @@ export const wedding = {
     { label: "We Say “I Do”", date: "26 December 2026" },
   ],
   gallery: [
-    { src: "/images/couple-engagement-playful.jpg", alt: "Amirul and Erni sharing a playful moment at their engagement", position: "center 58%" },
-    { src: "/images/couple-waterfall.jpg", alt: "Amirul and Erni together beside a waterfall", position: "center 52%" },
-    { src: "/images/couple-palace.jpg", alt: "Amirul and Erni visiting a historic palace", position: "center 55%" },
-    { src: "/images/couple-cinema.jpg", alt: "Amirul and Erni enjoying a cinema date", position: "center 45%" },
-    { src: "/images/couple-crossed-paths.jpg", alt: "Amirul and Erni making a heart shape together outdoors", position: "center 70%" },
-    { src: "/images/couple-engagement-ring.jpg", alt: "Amirul and Erni celebrating their engagement", position: "center 55%" },
+    { src: publicAsset("couple-engagement-playful.jpg"), alt: "Amirul and Erni sharing a playful moment at their engagement", position: "center 58%" },
+    { src: publicAsset("couple-waterfall.jpg"), alt: "Amirul and Erni together beside a waterfall", position: "center 52%" },
+    { src: publicAsset("couple-palace.jpg"), alt: "Amirul and Erni visiting a historic palace", position: "center 55%" },
+    { src: publicAsset("couple-cinema.jpg"), alt: "Amirul and Erni enjoying a cinema date", position: "center 45%" },
+    { src: publicAsset("couple-crossed-paths.jpg"), alt: "Amirul and Erni making a heart shape together outdoors", position: "center 70%" },
+    { src: publicAsset("couple-engagement-ring.jpg"), alt: "Amirul and Erni celebrating their engagement", position: "center 55%" },
   ],
   rsvp: {
     formUrl: "", // PLACEHOLDER: public Google Form URL.
@@ -105,9 +107,9 @@ export const wedding = {
     whatsappText: "Dengan penuh kesyukuran, kami menjemput anda ke Majlis Perkahwinan Amirul & Erni pada 26 December 2026.",
   },
   images: {
-    hero: "/images/couple-closing.jpg",
-    story: "/images/couple-waterfall.jpg",
-    closing: "/images/couple-engagement-ring.jpg",
+    hero: publicAsset("couple-closing.jpg"),
+    story: publicAsset("couple-waterfall.jpg"),
+    closing: publicAsset("couple-engagement-ring.jpg"),
   },
   features: {
     gallery: false,
