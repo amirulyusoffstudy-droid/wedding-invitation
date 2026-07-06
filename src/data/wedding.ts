@@ -105,7 +105,7 @@ export const wedding = {
         bank: "[BANK PENGANTIN LELAKI PLACEHOLDER]",
         accountHolder: "Muhammad Amirul",
         accountNumber: "[NOMBOR AKAUN PLACEHOLDER]",
-        duitNowQr: "", // Simpan QR yang diberi sebagai public/images/qr-amirul.png.
+        duitNowQr: publicAsset("qr-amirul.jpeg"),
       },
     ],
   },
