@@ -3,7 +3,7 @@ const publicAsset = (filename: string) => `${import.meta.env.BASE_URL}images/${f
 
 export const wedding = {
   couple: {
-    shortNames: "Amirul & Erni",
+    shortNames: "Erni & Amirul",
     groom: "Muhammad Amirul",
     bride: "Erni Alysya",
     theme: "We Met Before We Met",
@@ -34,8 +34,8 @@ export const wedding = {
     address: "[FULL ADDRESS PLACEHOLDER]",
     dressCode: "[DRESS CODE PLACEHOLDER]",
     rsvpDeadline: "[RSVP DEADLINE PLACEHOLDER]",
-    title: "Majlis Perkahwinan Amirul & Erni",
-    description: "Walimatul Urus Muhammad Amirul dan Erni Alysya.",
+    title: "Majlis Perkahwinan Erni & Amirul",
+    description: "Walimatul Urus Erni Alysya dan Muhammad Amirul.",
   },
   links: {
     maps: "", // PLACEHOLDER: paste a Google Maps URL.
@@ -104,7 +104,7 @@ export const wedding = {
     volume: 0.2,
   },
   sharing: {
-    whatsappText: "Dengan penuh kesyukuran, kami menjemput anda ke Majlis Perkahwinan Amirul & Erni pada 26 December 2026.",
+    whatsappText: "Dengan penuh kesyukuran, kami menjemput anda ke Majlis Perkahwinan Erni & Amirul pada 26 December 2026.",
   },
   images: {
     hero: publicAsset("couple-closing.jpg"),

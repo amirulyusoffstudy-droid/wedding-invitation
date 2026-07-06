@@ -60,6 +60,39 @@ function SectionTitle({ eyebrow, children }: { eyebrow: string; children: React.
   return <header className="section-title"><span>{eyebrow}</span><h2>{children}</h2><i aria-hidden="true">❦</i></header>;
 }
 
+type QuickPanelName = "contact" | "location" | "gift" | "wishes";
+
+function QuickPanel({ title, onClose, children }: { title: string; onClose: () => void; children: React.ReactNode }) {
+  const closeRef = useRef<HTMLButtonElement>(null);
+  useEffect(() => {
+    const previous = document.activeElement as HTMLElement | null;
+    closeRef.current?.focus();
+    document.body.style.overflow = "hidden";
+    const onKeyDown = (event: KeyboardEvent) => {
+      if (event.key === "Escape") onClose();
+    };
+    document.addEventListener("keydown", onKeyDown);
+    return () => {
+      document.removeEventListener("keydown", onKeyDown);
+      document.body.style.overflow = "";
+      previous?.focus();
+    };
+  }, [onClose]);
+
+  return <div className="quick-panel-backdrop" onMouseDown={(event) => {
+    if (event.target === event.currentTarget) onClose();
+  }}>
+    <section className="quick-panel" role="dialog" aria-modal="true" aria-labelledby="quick-panel-title">
+      <div className="quick-panel-handle" aria-hidden="true" />
+      <header>
+        <div><span>Erni & Amirul</span><h2 id="quick-panel-title">{title}</h2></div>
+        <button ref={closeRef} onClick={onClose} aria-label={`Tutup ${title}`}><X /></button>
+      </header>
+      <div className="quick-panel-content">{children}</div>
+    </section>
+  </div>;
+}
+
 export default function App() {
   const [opened, setOpened] = useState(() => sessionStorage.getItem("invitation-opened") === "true");
   const [opening, setOpening] = useState(false);
@@ -67,6 +100,7 @@ export default function App() {
   const [lightbox, setLightbox] = useState<number | null>(null);
   const [toast, setToast] = useState("");
   const [playing, setPlaying] = useState(false);
+  const [quickPanel, setQuickPanel] = useState<QuickPanelName | null>(null);
   const audioRef = useRef<HTMLAudioElement>(null);
   const musicAvailable = wedding.features.music && wedding.music.enabled && Boolean(wedding.music.src);
   const maps = wedding.links.maps;
@@ -147,7 +181,7 @@ export default function App() {
         <div className="hero-overlay" />
         <div className="hero-content">
           <p>{wedding.couple.theme}</p>
-          <h1>Amirul <em>&</em> Erni</h1>
+          <h1>Erni <em>&</em> Amirul</h1>
           <span>{wedding.couple.openingLine}</span>
           <div className="hero-date">{wedding.dates.weddingDisplay}</div>
           <Countdown />
@@ -161,7 +195,7 @@ export default function App() {
         <p>{wedding.invitation.preface}</p>
         <div className="parents"><strong>{wedding.parents.bride}</strong><span>dan</span><strong>{wedding.parents.groom}</strong></div>
         <p>{wedding.invitation.request}</p>
-        <div className="couple-names"><strong>{wedding.couple.groom}</strong><i>&</i><strong>{wedding.couple.bride}</strong></div>
+        <div className="couple-names"><strong>{wedding.couple.bride}</strong><i>&</i><strong>{wedding.couple.groom}</strong></div>
         <p className="blessing">{wedding.invitation.blessing}</p>
       </section>
 
@@ -239,15 +273,63 @@ export default function App() {
       </section>
     </main>
 
-    <footer><span>EA</span><p>© {new Date().getFullYear()} Amirul & Erni. Made with love.</p></footer>
+    <footer><span>EA</span><p>© {new Date().getFullYear()} Erni & Amirul. Made with love.</p></footer>
 
-    {opened && <nav className="mobile-bar" aria-label="Quick actions">
-      <a href={wedding.rsvp.formUrl || "#rsvp"}><MessageCircle /><span>RSVP</span></a>
-      <a href={maps || "#details"}><MapPin /><span>Maps</span></a>
-      <a href={waze || "#details"}><Menu /><span>Waze</span></a>
-      <button onClick={addCalendar}><CalendarDays /><span>Calendar</span></button>
-      <a href={whatsapp || "#details"}><Phone /><span>Contact</span></a>
+    {opened && <nav className="mobile-bar" aria-label="Menu pantas">
+      <button onClick={() => setQuickPanel("contact")} aria-haspopup="dialog"><Phone /><span>Hubungi</span></button>
+      <button onClick={() => setQuickPanel("location")} aria-haspopup="dialog"><MapPin /><span>Lokasi</span></button>
+      <button onClick={() => setQuickPanel("gift")} aria-haspopup="dialog"><Gift /><span>Hadiah</span></button>
+      <button onClick={() => setQuickPanel("wishes")} aria-haspopup="dialog"><MessageCircle /><span>Ucapan</span></button>
     </nav>}
+    {quickPanel === "contact" && <QuickPanel title="Hubungi" onClose={() => setQuickPanel(null)}>
+      <p className="panel-intro">Hubungi wakil keluarga sekiranya anda memerlukan bantuan mengenai majlis.</p>
+      <div className="panel-contact-list">{wedding.contacts.map((contact) => {
+        const number = contact.phone.replace(/\D/g, "");
+        return <article key={contact.name}><div><strong>{contact.name}</strong><span>{contact.role}</span></div><div className="panel-actions">
+          <ActionLink href={number ? `tel:+${number}` : ""} icon={<Phone />} label="Panggil" />
+          <ActionLink href={number ? `https://wa.me/${number}` : ""} icon={<MessageCircle />} label="WhatsApp" />
+        </div></article>;
+      })}</div>
+    </QuickPanel>}
+    {quickPanel === "location" && <QuickPanel title="Lokasi Majlis" onClose={() => setQuickPanel(null)}>
+      <div className="panel-event">
+        <MapPin />
+        <strong>{wedding.event.venue}</strong>
+        <p>{wedding.event.address}</p>
+        <dl><div><dt>Tarikh</dt><dd>{wedding.event.date}</dd></div><div><dt>Waktu</dt><dd>{wedding.event.time}</dd></div></dl>
+      </div>
+      <div className="panel-wide-actions">
+        <ActionLink href={maps} icon={<MapPin />} label="Google Maps" />
+        <ActionLink href={waze} icon={<Menu />} label="Waze" />
+      </div>
+    </QuickPanel>}
+    {quickPanel === "gift" && <QuickPanel title="Hadiah" onClose={() => setQuickPanel(null)}>
+      <div className="panel-gift">
+        <Gift />
+        <p>{wedding.gifts.message}</p>
+        {wedding.gifts.duitNowQr
+          ? <img src={wedding.gifts.duitNowQr} alt="DuitNow QR untuk hadiah perkahwinan" />
+          : <div className="qr-placeholder">QR DuitNow akan dipaparkan di sini</div>}
+        <span>{wedding.gifts.bank}</span>
+        <strong>{wedding.gifts.accountHolder}</strong>
+        <code>{wedding.gifts.accountNumber}</code>
+        <button className="copy-button" onClick={() => {
+          navigator.clipboard.writeText(wedding.gifts.accountNumber);
+          setToast("Nombor akaun disalin");
+          window.setTimeout(() => setToast(""), 2500);
+        }}><Clipboard /> Salin nombor akaun</button>
+      </div>
+    </QuickPanel>}
+    {quickPanel === "wishes" && <QuickPanel title="Ucapan & RSVP" onClose={() => setQuickPanel(null)}>
+      <div className="panel-wishes">
+        <Heart />
+        <p>{wedding.rsvp.message}</p>
+        <strong>Tarikh akhir: {wedding.event.rsvpDeadline}</strong>
+        {wedding.rsvp.formUrl
+          ? <a className="primary-button" href={wedding.rsvp.formUrl} target="_blank" rel="noreferrer">Tulis Ucapan & RSVP <MessageCircle /></a>
+          : <button className="primary-button" disabled>Google Form belum dikonfigurasi</button>}
+      </div>
+    </QuickPanel>}
     {lightbox !== null && <Lightbox index={lightbox} setIndex={setLightbox} close={() => setLightbox(null)} />}
     {toast && <div className="toast" role="status">{toast}</div>}
   </div>;

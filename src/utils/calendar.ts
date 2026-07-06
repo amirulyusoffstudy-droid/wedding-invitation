@@ -16,7 +16,7 @@ export function downloadCalendar() {
   if (!calendarReady()) return false;
   const date = "2026-12-26";
   const lines = [
-    "BEGIN:VCALENDAR", "VERSION:2.0", "PRODID:-//Amirul & Erni//Wedding Invitation//EN",
+    "BEGIN:VCALENDAR", "VERSION:2.0", "PRODID:-//Erni & Amirul//Wedding Invitation//EN",
     "CALSCALE:GREGORIAN", "METHOD:PUBLISH", "BEGIN:VEVENT",
     `UID:amirul-erni-20261226@amirul-erni.vercel.app`,
     `DTSTAMP:${new Date().toISOString().replace(/[-:]/g, "").replace(/\.\d{3}/, "")}`,

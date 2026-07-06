@@ -1,4 +1,4 @@
-# Amirul & Erni — Digital Wedding Invitation
+# Erni & Amirul — Digital Wedding Invitation
 
 A mobile-first Malaysian wedding invitation, personal story, and practical guest guide for 26 December 2026. Built as a static React application suitable for Vercel.
 

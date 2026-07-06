@@ -132,15 +132,46 @@ img { max-width:100%; display:block; }
 .closing p { font:italic 1.4rem/1.5 "Cormorant Garamond"; }.closing h2 { font-size:clamp(4rem,14vw,7rem);margin:25px 0; }.closing span,.closing strong { display:block; }.closing strong { margin-top:30px;color:#e0c582;text-transform:uppercase;letter-spacing:.2em;font-size:.75rem; }
 footer { padding:40px 20px 100px;text-align:center;background:#1c1a3a;color:#cbc6d8;font-size:.75rem; }
 footer>span { font:1.8rem "Cormorant Garamond";color:#e0c582; }
-.mobile-bar { position:fixed;z-index:40;bottom:0;left:0;right:0;display:grid;grid-template-columns:repeat(5,1fr);padding:5px 4px calc(5px + env(safe-area-inset-bottom));background:#fffdfa;box-shadow:0 -5px 25px #27190f1c; }
+.mobile-bar { position:fixed;z-index:130;bottom:0;left:0;right:0;display:grid;grid-template-columns:repeat(4,1fr);padding:6px 4px calc(6px + env(safe-area-inset-bottom));background:linear-gradient(105deg,#eee4f5,#f8edf2 52%,#e9dcf2);border-top:1px solid #ffffffaa;box-shadow:0 -5px 25px #27190f24; }
 .mobile-bar a,.mobile-bar button { min-height:52px;border:0;background:transparent;color:var(--burgundy);display:flex;flex-direction:column;align-items:center;justify-content:center;gap:3px;text-decoration:none;font-size:.58rem; }
 .mobile-bar svg { width:19px;height:19px; }
+.quick-panel-backdrop { position:fixed;inset:0;z-index:120;display:flex;align-items:flex-end;justify-content:center;padding:18px 12px calc(69px + env(safe-area-inset-bottom));background:rgba(17,14,38,.62);backdrop-filter:blur(4px);animation:panel-fade .22s ease-out; }
+.quick-panel { width:min(100%,560px);max-height:calc(100svh - 105px);overflow:auto;color:var(--ink);background:linear-gradient(145deg,#fdfaff,#f0e8f7);border:1px solid #ffffffcc;border-radius:28px 28px 18px 18px;box-shadow:0 24px 70px rgba(18,13,46,.45);animation:panel-rise .3s ease-out; }
+.quick-panel-handle { width:46px;height:4px;margin:10px auto 2px;border-radius:99px;background:#8f83a580; }
+.quick-panel>header { position:sticky;top:0;z-index:2;display:flex;align-items:center;justify-content:space-between;padding:16px 20px 14px;background:#faf6fddd;border-bottom:1px solid var(--border);backdrop-filter:blur(10px); }
+.quick-panel>header span { color:var(--gold);font-size:.62rem;font-weight:600;letter-spacing:.18em;text-transform:uppercase; }
+.quick-panel>header h2 { margin:2px 0 0;color:var(--burgundy);font:600 2rem/1 "Cormorant Garamond",Georgia,serif; }
+.quick-panel>header button { width:44px;height:44px;display:grid;place-items:center;border:1px solid var(--border);border-radius:50%;color:var(--burgundy);background:#fff9; }
+.quick-panel-content { padding:22px 20px 28px; }
+.panel-intro { margin:0 0 18px;color:var(--muted);line-height:1.6;text-align:center; }
+.panel-contact-list { display:grid;gap:12px; }
+.panel-contact-list article { display:grid;gap:15px;padding:18px;background:#fff9;border:1px solid var(--border);border-radius:15px; }
+.panel-contact-list article>div:first-child { display:grid;gap:4px;text-align:center; }
+.panel-contact-list strong { font:600 1.35rem "Cormorant Garamond",Georgia,serif;color:var(--green); }
+.panel-contact-list span { color:var(--muted);font-size:.75rem; }
+.panel-actions,.panel-wide-actions { display:grid;grid-template-columns:1fr 1fr;gap:10px; }
+.quick-panel .action-link { width:100%;min-height:52px;flex-direction:row;color:var(--burgundy);background:#fff8;border:1px solid var(--border);border-radius:12px;font-size:.72rem; }
+.panel-event,.panel-gift,.panel-wishes { display:flex;flex-direction:column;align-items:center;text-align:center; }
+.panel-event>svg,.panel-gift>svg,.panel-wishes>svg { color:var(--gold);width:30px;height:30px;margin-bottom:12px; }
+.panel-event>strong { color:var(--green);font:600 1.65rem "Cormorant Garamond",Georgia,serif; }
+.panel-event>p { margin:8px 0 22px;color:var(--muted);line-height:1.55; }
+.panel-event dl { width:100%;display:grid;grid-template-columns:1fr 1fr;margin:0 0 20px;border:1px solid var(--border);border-radius:14px;overflow:hidden;background:#fff8; }
+.panel-event dl div { padding:14px 8px; }.panel-event dl div+div { border-left:1px solid var(--border); }
+.panel-event dt { color:var(--gold);font-size:.62rem;text-transform:uppercase;letter-spacing:.13em; }.panel-event dd { margin:6px 0 0;font-size:.78rem; }
+.panel-gift>p,.panel-wishes>p { color:var(--muted);line-height:1.6;max-width:420px; }
+.panel-gift>img { width:min(100%,300px);aspect-ratio:1;object-fit:contain;margin:12px 0 18px;padding:10px;background:#fff;border-radius:15px; }
+.qr-placeholder { width:min(100%,300px);aspect-ratio:1;display:grid;place-items:center;margin:12px 0 18px;padding:30px;color:#8c829a;background:repeating-linear-gradient(45deg,#fff,#fff 12px,#f3edf7 12px,#f3edf7 24px);border:1px dashed #9d91af;border-radius:15px;font-size:.8rem; }
+.panel-gift>span { color:var(--gold);font-size:.7rem;text-transform:uppercase;letter-spacing:.14em; }.panel-gift>strong { margin:7px 0;font:600 1.35rem "Cormorant Garamond",Georgia,serif; }.panel-gift>code { font:600 1rem Inter,system-ui,sans-serif; }
+.copy-button { min-height:44px;margin-top:15px;display:flex;align-items:center;gap:8px;padding:10px 16px;color:#fff;background:var(--burgundy);border:0;border-radius:10px; }.copy-button svg { width:17px; }
+.panel-wishes>strong { color:var(--gold);font-size:.76rem; }.panel-wishes .primary-button { width:100%;margin-top:22px; }
 .lightbox { position:fixed;inset:0;z-index:200;background:#10120ff5;display:grid;grid-template-columns:52px 1fr 52px;place-items:center;color:#fff; }
 .lightbox figure { margin:0;max-width:min(82vw,800px);max-height:88vh;display:grid;place-items:center;gap:10px; }.lightbox img { max-height:82vh;object-fit:contain; }.lightbox figcaption { font-size:.75rem;opacity:.7; }
 .lightbox button { width:48px;height:48px;border:0;background:transparent;color:#fff;display:grid;place-items:center; }.lightbox-close { position:absolute;right:15px;top:15px; }
 .toast { position:fixed;z-index:300;left:50%;bottom:90px;transform:translateX(-50%);background:#1f2d25;color:#fff;padding:12px 18px;box-shadow:0 5px 20px #0004;white-space:nowrap;font-size:.8rem; }
 @keyframes bob { 50% { transform:translateY(6px); } }
 @keyframes twinkle { 0%,100%{opacity:.25;transform:scale(.75) rotate(0)}50%{opacity:1;transform:scale(1.15) rotate(20deg)} }
+@keyframes panel-fade { from { opacity:0; } }
+@keyframes panel-rise { from { opacity:0;transform:translateY(35px) scale(.98); } }
 @media (min-width:760px) {
   .topbar nav { display:flex; }
   .details-grid { grid-template-columns:repeat(3,1fr); }
