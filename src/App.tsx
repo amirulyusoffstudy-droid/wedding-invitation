@@ -8,6 +8,7 @@ import { downloadCalendar } from "./utils/calendar";
 import { getGuestName } from "./utils/guest";
 
 type PanelName = "contact" | "location" | "gift" | "wishes";
+const isConfigured = (value: string) => Boolean(value && !value.includes("PLACEHOLDER"));
 
 function BotanicalFrame() {
   return <div className="botanical-frame" aria-hidden="true">
@@ -210,11 +211,13 @@ export default function App() {
         {account.duitNowQr
           ? <img src={account.duitNowQr} alt={`Kod QR DuitNow ${account.label}`} />
           : <div className="qr-empty">Kod QR akan ditambah kemudian</div>}
-        <span>{account.bank}</span><strong>{account.accountHolder}</strong><code>{account.accountNumber}</code>
-        <button onClick={() => {
-          navigator.clipboard.writeText(account.accountNumber);
-          showToast("Nombor akaun telah disalin");
-        }}><Clipboard /> Salin nombor akaun</button>
+        {isConfigured(account.bank) && <span>{account.bank}</span>}
+        <strong>{account.accountHolder}</strong>
+        {isConfigured(account.accountNumber) && <><code>{account.accountNumber}</code>
+          <button onClick={() => {
+            navigator.clipboard.writeText(account.accountNumber);
+            showToast("Nombor akaun telah disalin");
+          }}><Clipboard /> Salin nombor akaun</button></>}
       </article>)}</div>
     </Panel>}
 
