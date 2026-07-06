@@ -14,14 +14,14 @@ function Countdown() {
     const id = window.setInterval(() => setRemaining(Math.max(0, target - Date.now())), 1000);
     return () => window.clearInterval(id);
   }, [target]);
-  if (!remaining) return <p className="countdown-finished">Our new chapter has begun.</p>;
+  if (!remaining) return <p className="countdown-finished">Lembaran baharu kami telah bermula.</p>;
   const units = [
-    ["Days", Math.floor(remaining / 86400000)],
-    ["Hours", Math.floor((remaining / 3600000) % 24)],
-    ["Minutes", Math.floor((remaining / 60000) % 60)],
-    ["Seconds", Math.floor((remaining / 1000) % 60)],
+    ["Hari", Math.floor(remaining / 86400000)],
+    ["Jam", Math.floor((remaining / 3600000) % 24)],
+    ["Minit", Math.floor((remaining / 60000) % 60)],
+    ["Saat", Math.floor((remaining / 1000) % 60)],
   ];
-  return <div className="countdown" aria-label="Countdown to the wedding">{units.map(([label, value]) =>
+  return <div className="countdown" aria-label="Kiraan detik menuju hari perkahwinan">{units.map(([label, value]) =>
     <div key={label}><strong>{String(value).padStart(2, "0")}</strong><span>{label}</span></div>)}</div>;
 }
 
@@ -46,13 +46,13 @@ function Lightbox({ index, setIndex, close }: { index: number; setIndex: (n: num
     return () => { document.removeEventListener("keydown", key); document.body.style.overflow = ""; previous?.focus(); };
   }, [close, index, setIndex]);
   const image = wedding.gallery[index];
-  return <div className="lightbox" role="dialog" aria-modal="true" aria-label="Photo gallery"
+  return <div className="lightbox" role="dialog" aria-modal="true" aria-label="Galeri foto"
     onTouchStart={(e) => { touch.current = e.touches[0].clientX; }}
     onTouchEnd={(e) => { const delta = e.changedTouches[0].clientX - touch.current; if (Math.abs(delta) > 50) setIndex(delta > 0 ? (index - 1 + wedding.gallery.length) % wedding.gallery.length : (index + 1) % wedding.gallery.length); }}>
-    <button ref={closeRef} className="lightbox-close" onClick={close} aria-label="Close gallery"><X /></button>
-    <button className="lightbox-prev" onClick={() => setIndex((index - 1 + wedding.gallery.length) % wedding.gallery.length)} aria-label="Previous photo"><ChevronLeft /></button>
+    <button ref={closeRef} className="lightbox-close" onClick={close} aria-label="Tutup galeri"><X /></button>
+    <button className="lightbox-prev" onClick={() => setIndex((index - 1 + wedding.gallery.length) % wedding.gallery.length)} aria-label="Foto sebelumnya"><ChevronLeft /></button>
     <figure><img src={image.src} alt={image.alt} /><figcaption>{index + 1} / {wedding.gallery.length}</figcaption></figure>
-    <button className="lightbox-next" onClick={() => setIndex((index + 1) % wedding.gallery.length)} aria-label="Next photo"><ChevronRight /></button>
+    <button className="lightbox-next" onClick={() => setIndex((index + 1) % wedding.gallery.length)} aria-label="Foto seterusnya"><ChevronRight /></button>
   </div>;
 }
 
@@ -165,19 +165,19 @@ export default function App() {
     </div>}
 
     {musicAvailable && <><audio ref={audioRef} src={wedding.music.src} loop={wedding.music.loop} preload="none" />
-      <button className="music-control" onClick={toggleMusic} aria-label={playing ? "Pause background music" : "Play background music"}>{playing ? <Pause /> : <Music />}</button></>}
+      <button className="music-control" onClick={toggleMusic} aria-label={playing ? "Jeda muzik latar" : "Mainkan muzik latar"}>{playing ? <Pause /> : <Music />}</button></>}
 
     <header className="topbar">
       <a href="#home" className="monogram" aria-label="Erni and Amirul home">EA</a>
       <nav aria-label="Primary navigation">
-        <a href="#invitation">Invitation</a><a href="#story">Our Story</a><a href="#details">Details</a>
+        <a href="#invitation">Jemputan</a><a href="#story">Kisah Kami</a><a href="#details">Butiran</a>
       </nav>
-      <button onClick={share} className="icon-button" aria-label="Share invitation"><Share2 /></button>
+      <button onClick={share} className="icon-button" aria-label="Kongsi jemputan"><Share2 /></button>
     </header>
 
     <main>
       <section id="home" className="hero">
-        <img src={wedding.images.hero} alt="Amirul and Erni at their engagement beneath a blue and lilac flower arch" />
+        <img src={wedding.images.hero} alt="Erni dan Amirul pada hari pertunangan di bawah hiasan bunga biru dan ungu" />
         <div className="hero-overlay" />
         <div className="hero-content">
           <p>{wedding.couple.theme}</p>
@@ -186,7 +186,7 @@ export default function App() {
           <div className="hero-date">{wedding.dates.weddingDisplay}</div>
           <Countdown />
         </div>
-        <a className="scroll-cue" href="#invitation"><span>Scroll</span><ChevronDown /></a>
+        <a className="scroll-cue" href="#invitation"><span>Lihat Jemputan</span><ChevronDown /></a>
       </section>
 
       <section id="invitation" className="paper-section formal">
@@ -200,22 +200,22 @@ export default function App() {
       </section>
 
       <section id="details" className="section event-section">
-        <SectionTitle eyebrow="Save the date">Butiran Majlis</SectionTitle>
-        <div className="date-medallion"><span>26</span><div><strong>December</strong><small>2026</small></div></div>
+        <SectionTitle eyebrow="Simpan tarikh ini">Butiran Majlis</SectionTitle>
+        <div className="date-medallion"><span>26</span><div><strong>Disember</strong><small>2026</small></div></div>
         <div className="details-grid">
           <article><CalendarDays /><span>Hari & Tarikh</span><strong>{wedding.event.day}</strong><p>{wedding.event.date}</p></article>
           <article><Heart /><span>Masa</span><strong>{wedding.event.time}</strong><p>Waktu Malaysia (UTC+8)</p></article>
           <article><MapPin /><span>Lokasi</span><strong>{wedding.event.venue}</strong><p>{wedding.event.address}</p></article>
         </div>
-        <dl className="mini-details"><div><dt>Dress code</dt><dd>{wedding.event.dressCode}</dd></div><div><dt>RSVP sebelum</dt><dd>{wedding.event.rsvpDeadline}</dd></div></dl>
+        <dl className="mini-details"><div><dt>Kod pakaian</dt><dd>{wedding.event.dressCode}</dd></div><div><dt>Waktu majlis</dt><dd>{wedding.event.time}</dd></div></dl>
         <div className="action-row">
           <ActionLink href={maps} icon={<MapPin />} label="Google Maps" />
           <ActionLink href={waze} icon={<Menu />} label="Waze" />
-          <button className="action-link" onClick={addCalendar}><CalendarDays /><span>Calendar</span></button>
+          <button className="action-link" onClick={addCalendar}><CalendarDays /><span>Kalendar</span></button>
           <ActionLink href={whatsapp} icon={<MessageCircle />} label="WhatsApp" />
-          <ActionLink href={phone ? `tel:+${phone}` : ""} icon={<Phone />} label="Call" />
+          <ActionLink href={phone ? `tel:+${phone}` : ""} icon={<Phone />} label="Panggil" />
         </div>
-        {calendarReady() && <a className="text-link" href={googleCalendarUrl()} target="_blank" rel="noreferrer">Or add with Google Calendar</a>}
+        {calendarReady() && <a className="text-link" href={googleCalendarUrl()} target="_blank" rel="noreferrer">Atau tambah melalui Google Calendar</a>}
       </section>
 
       <section className="section programme">
@@ -224,25 +224,24 @@ export default function App() {
       </section>
 
       <section id="story" className="story section">
-        <SectionTitle eyebrow="The story so far">We Met Before We Met</SectionTitle>
+        <SectionTitle eyebrow="Kisah perjalanan kami">Kita Pernah Bertemu Sebelum Berkenalan</SectionTitle>
         <div className="story-layout"><div className="story-copy">{wedding.story.map((p, i) => <p key={i}>{p}</p>)}</div>
-          <div className="story-image"><img loading="lazy" src={wedding.images.story} alt="Amirul and Erni together beside a waterfall" /></div></div>
+          <div className="story-image"><img loading="lazy" src={wedding.images.story} alt="Erni dan Amirul bersama di tepi air terjun" /></div></div>
         <div className="relationship-timeline">{wedding.timeline.map((item) => <article key={item.label}><span>{item.date}</span><h3>{item.label}</h3></article>)}</div>
       </section>
 
       {wedding.features.gallery && <section className="section gallery-section">
-        <SectionTitle eyebrow="Memories in the making">Galeri Kami</SectionTitle>
-        <div className="gallery">{wedding.gallery.map((image, index) => <button key={index} onClick={() => setLightbox(index)} aria-label={`Open photo: ${image.alt}`}>
+        <SectionTitle eyebrow="Kenangan tercipta">Galeri Kami</SectionTitle>
+        <div className="gallery">{wedding.gallery.map((image, index) => <button key={index} onClick={() => setLightbox(index)} aria-label={`Buka foto: ${image.alt}`}>
           <img loading="lazy" src={image.src} alt={image.alt} style={{ objectPosition: image.position }} width="800" height={index === 0 ? "1100" : "700"} />
         </button>)}</div>
       </section>}
 
-      <section id="rsvp" className="rsvp section">
-        <SectionTitle eyebrow="Kindly reply">Sahkan Kehadiran</SectionTitle>
-        <p>{wedding.rsvp.message}</p>
-        <strong>Tarikh akhir: {wedding.event.rsvpDeadline}</strong>
-        {wedding.rsvp.formUrl ? <a className="primary-button" href={wedding.rsvp.formUrl} target="_blank" rel="noreferrer">Sahkan Kehadiran <MessageCircle /></a>
-          : <button className="primary-button" disabled>Google Form belum dikonfigurasi</button>}
+      <section id="wishes" className="rsvp section">
+        <SectionTitle eyebrow="Titipkan doa">Ucapan Buat Pengantin</SectionTitle>
+        <p>{wedding.wishes.message}</p>
+        {wedding.wishes.formUrl ? <a className="primary-button" href={wedding.wishes.formUrl} target="_blank" rel="noreferrer">Tulis Ucapan <MessageCircle /></a>
+          : <button className="primary-button" disabled>Borang ucapan akan dibuka kemudian</button>}
       </section>
 
       <section className="section contacts">
@@ -250,30 +249,33 @@ export default function App() {
         <div className="contact-grid">{wedding.contacts.map((contact) => {
           const number = contact.phone.replace(/\D/g, "");
           return <article key={contact.name}><h3>{contact.name}</h3><p>{contact.role}</p><div>
-            <ActionLink href={number ? `tel:+${number}` : ""} icon={<Phone />} label="Call" />
+            <ActionLink href={number ? `tel:+${number}` : ""} icon={<Phone />} label="Panggil" />
             <ActionLink href={number ? `https://wa.me/${number}` : ""} icon={<MessageCircle />} label="WhatsApp" />
           </div></article>;
         })}</div>
       </section>
 
       {wedding.features.gifts && wedding.gifts.enabled && <section className="section gifts">
-        <details><summary><Gift /> Hadiah <ChevronDown /></summary><div><p>{wedding.gifts.message}</p><span>{wedding.gifts.bank}</span><strong>{wedding.gifts.accountHolder}</strong>
-          <code>{wedding.gifts.accountNumber}</code><button onClick={() => navigator.clipboard.writeText(wedding.gifts.accountNumber)}><Clipboard /> Copy account number</button>
-          {wedding.gifts.duitNowQr && <img loading="lazy" src={wedding.gifts.duitNowQr} alt="DuitNow QR code for wedding gift" />}</div></details>
+        <details><summary><Gift /> Hadiah <ChevronDown /></summary><div><p>{wedding.gifts.message}</p>
+          {wedding.gifts.accounts.map((account) => <article className="gift-account" key={account.label}><h3>{account.label}</h3>
+            {account.duitNowQr && <img loading="lazy" src={account.duitNowQr} alt={`Kod QR DuitNow ${account.label}`} />}
+            <span>{account.bank}</span><strong>{account.accountHolder}</strong><code>{account.accountNumber}</code>
+            <button onClick={() => navigator.clipboard.writeText(account.accountNumber)}><Clipboard /> Salin nombor akaun</button>
+          </article>)}</div></details>
       </section>}
 
       <section className="section faq">
-        <SectionTitle eyebrow="Good to know">Soalan Lazim</SectionTitle>
+        <SectionTitle eyebrow="Maklumat berguna">Soalan Lazim</SectionTitle>
         <div>{wedding.faq.map((item) => <details key={item.question}><summary>{item.question}<ChevronDown /></summary><p>{item.answer}</p></details>)}</div>
       </section>
 
       <section className="closing">
-        <img loading="lazy" src={wedding.images.closing} alt="Amirul and Erni celebrating their engagement together" />
+        <img loading="lazy" src={wedding.images.closing} alt="Erni dan Amirul meraikan pertunangan mereka" />
         <div><p>{wedding.closing.line}</p><h2>{wedding.couple.shortNames}</h2><span>{wedding.closing.thanks}</span><strong>Jumpa anda di sana</strong></div>
       </section>
     </main>
 
-    <footer><span>EA</span><p>© {new Date().getFullYear()} Erni & Amirul. Made with love.</p></footer>
+    <footer><span>EA</span><p>© {new Date().getFullYear()} Erni & Amirul. Dibina dengan penuh kasih.</p></footer>
 
     {opened && <nav className="mobile-bar" aria-label="Menu pantas">
       <button onClick={() => setQuickPanel("contact")} aria-haspopup="dialog"><Phone /><span>Hubungi</span></button>
@@ -307,27 +309,29 @@ export default function App() {
       <div className="panel-gift">
         <Gift />
         <p>{wedding.gifts.message}</p>
-        {wedding.gifts.duitNowQr
-          ? <img src={wedding.gifts.duitNowQr} alt="DuitNow QR untuk hadiah perkahwinan" />
-          : <div className="qr-placeholder">QR DuitNow akan dipaparkan di sini</div>}
-        <span>{wedding.gifts.bank}</span>
-        <strong>{wedding.gifts.accountHolder}</strong>
-        <code>{wedding.gifts.accountNumber}</code>
-        <button className="copy-button" onClick={() => {
-          navigator.clipboard.writeText(wedding.gifts.accountNumber);
-          setToast("Nombor akaun disalin");
-          window.setTimeout(() => setToast(""), 2500);
-        }}><Clipboard /> Salin nombor akaun</button>
+        <div className="panel-gift-accounts">{wedding.gifts.accounts.map((account) => <article key={account.label}>
+          <h3>{account.label}</h3>
+          {account.duitNowQr
+            ? <img src={account.duitNowQr} alt={`Kod QR DuitNow ${account.label}`} />
+            : <div className="qr-placeholder">Kod QR {account.label.toLowerCase()} akan dipaparkan di sini</div>}
+          <span>{account.bank}</span>
+          <strong>{account.accountHolder}</strong>
+          <code>{account.accountNumber}</code>
+          <button className="copy-button" onClick={() => {
+            navigator.clipboard.writeText(account.accountNumber);
+            setToast("Nombor akaun disalin");
+            window.setTimeout(() => setToast(""), 2500);
+          }}><Clipboard /> Salin nombor akaun</button>
+        </article>)}</div>
       </div>
     </QuickPanel>}
-    {quickPanel === "wishes" && <QuickPanel title="Ucapan & RSVP" onClose={() => setQuickPanel(null)}>
+    {quickPanel === "wishes" && <QuickPanel title="Ucapan" onClose={() => setQuickPanel(null)}>
       <div className="panel-wishes">
         <Heart />
-        <p>{wedding.rsvp.message}</p>
-        <strong>Tarikh akhir: {wedding.event.rsvpDeadline}</strong>
-        {wedding.rsvp.formUrl
-          ? <a className="primary-button" href={wedding.rsvp.formUrl} target="_blank" rel="noreferrer">Tulis Ucapan & RSVP <MessageCircle /></a>
-          : <button className="primary-button" disabled>Google Form belum dikonfigurasi</button>}
+        <p>{wedding.wishes.message}</p>
+        {wedding.wishes.formUrl
+          ? <a className="primary-button" href={wedding.wishes.formUrl} target="_blank" rel="noreferrer">Tulis Ucapan <MessageCircle /></a>
+          : <button className="primary-button" disabled>Borang ucapan akan dibuka kemudian</button>}
       </div>
     </QuickPanel>}
     {lightbox !== null && <Lightbox index={lightbox} setIndex={setLightbox} close={() => setLightbox(null)} />}

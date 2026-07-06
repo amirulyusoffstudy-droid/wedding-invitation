@@ -122,6 +122,8 @@ img { max-width:100%; display:block; }
 .gifts { background:#eee8f5; }.gifts details { max-width:650px;margin:auto;border:1px solid var(--border); }
 .gifts summary { min-height:60px;padding:18px;display:flex;align-items:center;gap:10px;cursor:pointer;font-family:"Cormorant Garamond";font-size:1.5rem; }
 .gifts summary svg:last-child { margin-left:auto; }.gifts details>div { padding:5px 25px 25px;display:grid;gap:10px; }.gifts code { font-size:1.15rem; }
+.gift-account { display:grid;justify-items:center;gap:8px;margin-top:12px;padding:22px;text-align:center;background:#fff8;border:1px solid var(--border);border-radius:15px; }
+.gift-account h3 { margin:0 0 8px;color:var(--burgundy);font:600 1.5rem "Cormorant Garamond",Georgia,serif; }.gift-account img { width:min(100%,280px);aspect-ratio:1;object-fit:contain;background:#fff;border-radius:12px; }.gift-account span { color:var(--gold);font-size:.7rem;text-transform:uppercase;letter-spacing:.13em; }.gift-account button { min-height:44px;margin-top:8px;padding:10px 14px;border:0;border-radius:8px;color:#fff;background:var(--burgundy); }
 .faq { background:var(--ivory); }.faq>div { max-width:760px;margin:auto;border-top:1px solid var(--border); }
 .faq details { border-bottom:1px solid var(--border); }.faq summary { display:flex;align-items:center;justify-content:space-between;gap:20px;min-height:70px;padding:15px 2px;cursor:pointer;font-weight:600;list-style:none; }
 .faq summary::-webkit-details-marker { display:none; }.faq summary svg { min-width:20px;transition:transform .2s; }.faq details[open] svg { transform:rotate(180deg); }.faq details p { margin:0 0 25px;color:var(--muted);line-height:1.6; }
@@ -159,9 +161,12 @@ footer>span { font:1.8rem "Cormorant Garamond";color:#e0c582; }
 .panel-event dl div { padding:14px 8px; }.panel-event dl div+div { border-left:1px solid var(--border); }
 .panel-event dt { color:var(--gold);font-size:.62rem;text-transform:uppercase;letter-spacing:.13em; }.panel-event dd { margin:6px 0 0;font-size:.78rem; }
 .panel-gift>p,.panel-wishes>p { color:var(--muted);line-height:1.6;max-width:420px; }
-.panel-gift>img { width:min(100%,300px);aspect-ratio:1;object-fit:contain;margin:12px 0 18px;padding:10px;background:#fff;border-radius:15px; }
+.panel-gift-accounts { width:100%;display:grid;gap:16px;margin-top:10px; }
+.panel-gift-accounts article { display:flex;flex-direction:column;align-items:center;padding:18px;background:#fff8;border:1px solid var(--border);border-radius:16px; }
+.panel-gift-accounts h3 { margin:0 0 8px;color:var(--burgundy);font:600 1.55rem "Cormorant Garamond",Georgia,serif; }
+.panel-gift-accounts img { width:min(100%,300px);aspect-ratio:1;object-fit:contain;margin:8px 0 16px;padding:10px;background:#fff;border-radius:15px; }
 .qr-placeholder { width:min(100%,300px);aspect-ratio:1;display:grid;place-items:center;margin:12px 0 18px;padding:30px;color:#8c829a;background:repeating-linear-gradient(45deg,#fff,#fff 12px,#f3edf7 12px,#f3edf7 24px);border:1px dashed #9d91af;border-radius:15px;font-size:.8rem; }
-.panel-gift>span { color:var(--gold);font-size:.7rem;text-transform:uppercase;letter-spacing:.14em; }.panel-gift>strong { margin:7px 0;font:600 1.35rem "Cormorant Garamond",Georgia,serif; }.panel-gift>code { font:600 1rem Inter,system-ui,sans-serif; }
+.panel-gift-accounts span { color:var(--gold);font-size:.7rem;text-transform:uppercase;letter-spacing:.14em; }.panel-gift-accounts strong { margin:7px 0;font:600 1.35rem "Cormorant Garamond",Georgia,serif; }.panel-gift-accounts code { font:600 1rem Inter,system-ui,sans-serif; }
 .copy-button { min-height:44px;margin-top:15px;display:flex;align-items:center;gap:8px;padding:10px 16px;color:#fff;background:var(--burgundy);border:0;border-radius:10px; }.copy-button svg { width:17px; }
 .panel-wishes>strong { color:var(--gold);font-size:.76rem; }.panel-wishes .primary-button { width:100%;margin-top:22px; }
 .lightbox { position:fixed;inset:0;z-index:200;background:#10120ff5;display:grid;grid-template-columns:52px 1fr 52px;place-items:center;color:#fff; }

@@ -1,4 +1,4 @@
-// Replace every value containing "PLACEHOLDER" before publishing.
+// Gantikan setiap nilai yang mengandungi "PLACEHOLDER" sebelum penerbitan akhir.
 const publicAsset = (filename: string) => `${import.meta.env.BASE_URL}images/${filename}`;
 
 export const wedding = {
@@ -6,16 +6,16 @@ export const wedding = {
     shortNames: "Erni & Amirul",
     groom: "Muhammad Amirul",
     bride: "Erni Alysya",
-    theme: "We Met Before We Met",
-    openingLine: "Before we ever matched, our paths had already crossed.",
+    theme: "Kita Pernah Bertemu Sebelum Berkenalan",
+    openingLine: "Sebelum kami dipertemukan, jalan hidup kami sebenarnya pernah bersilang.",
   },
   parents: {
-    bride: "[NAME OF BRIDE’S PARENTS]",
-    groom: "[NAME OF GROOM’S PARENTS]",
+    bride: "Maswani bin Marzuki & Nur Hayati binti Kamarudin",
+    groom: "Mazidah bt Abd Talib & Mohd Yusoff bin Rejab",
   },
   dates: {
-    engagement: "6 July 2025",
-    weddingDisplay: "26 December 2026",
+    engagement: "6 Julai 2025",
+    weddingDisplay: "26 Disember 2026",
     weddingIso: "2026-12-26T00:00:00+08:00",
   },
   invitation: {
@@ -25,86 +25,98 @@ export const wedding = {
     blessing: "Semoga dengan kehadiran dan doa restu para tetamu, majlis ini akan bertambah seri dan diberkati Allah SWT.",
   },
   event: {
-    day: "Saturday / Sabtu",
-    date: "26 December 2026",
-    time: "[TIME PLACEHOLDER]",
-    startTime: "", // Use HH:mm, e.g. "11:00", when confirmed.
-    endTime: "", // Use HH:mm, e.g. "16:00", when confirmed.
-    venue: "[VENUE PLACEHOLDER]",
-    address: "[FULL ADDRESS PLACEHOLDER]",
-    dressCode: "[DRESS CODE PLACEHOLDER]",
-    rsvpDeadline: "[RSVP DEADLINE PLACEHOLDER]",
+    day: "Sabtu",
+    date: "26 Disember 2026",
+    time: "11:00 pagi – 4:00 petang",
+    startTime: "11:00",
+    endTime: "16:00",
+    venue: "Inap D’Bondang Resort",
+    address: "Jalan Kasawari Peket 60 Dalam, 45300 Sungai Besar, Selangor",
+    dressCode: "[KOD PAKAIAN PLACEHOLDER]",
     title: "Majlis Perkahwinan Erni & Amirul",
     description: "Walimatul Urus Erni Alysya dan Muhammad Amirul.",
   },
   links: {
-    maps: "", // PLACEHOLDER: paste a Google Maps URL.
-    waze: "", // PLACEHOLDER: paste a Waze URL.
-    googleCalendar: "", // Optional; generated automatically when times are configured.
+    maps: "https://maps.app.goo.gl/s1L1t8az2jQbJCC99",
+    waze: "https://waze.com/ul/hw0xug89d4",
   },
   itinerary: [
-    { time: "11:00 AM", title: "Ketibaan Tetamu" },
-    { time: "12:30 PM", title: "Ketibaan Pengantin" },
-    { time: "1:00 PM", title: "Jamuan Makan" },
-    { time: "4:00 PM", title: "Majlis Bersurai" },
+    { time: "11:00 pagi", title: "Ketibaan Tetamu" },
+    { time: "12:30 tengah hari", title: "Ketibaan Pengantin" },
+    { time: "1:00 petang", title: "Jamuan Makan" },
+    { time: "4:00 petang", title: "Majlis Bersurai" },
   ],
   story: [
-    "Before we ever matched, our paths had already crossed. Amirul had spent time with one of Erni’s friends, and Erni had been there too—but somehow, he never noticed her.",
-    "Then one day, they matched on Tinder.",
-    "A match became a conversation. Conversations became late-night calls, meetups, laughter, and feelings neither of them could ignore. Slowly and naturally, they became part of each other’s lives.",
-    "On 6 July 2025, they took the next step and got engaged.",
-    "Now, their story continues toward 26 December 2026—the day they begin their forever together.",
+    "Sebelum kami dipertemukan, jalan hidup kami sebenarnya pernah bersilang. Amirul pernah meluangkan masa bersama salah seorang rakan Erni, dan Erni juga berada di situ—namun entah bagaimana, Amirul tidak menyedarinya.",
+    "Kemudian pada suatu hari, kami dipertemukan di Tinder.",
+    "Satu padanan menjadi perbualan. Perbualan bertukar menjadi panggilan lewat malam, pertemuan, gelak tawa dan perasaan yang tidak lagi mampu kami abaikan. Perlahan-lahan dan tanpa dipaksa, kami menjadi sebahagian daripada kehidupan satu sama lain.",
+    "Pada 6 Julai 2025, kami mengambil langkah seterusnya dan mengikat tali pertunangan.",
+    "Kini, kisah kami diteruskan menuju 26 Disember 2026—hari kami memulakan kehidupan bersama sebagai suami isteri.",
   ],
   timeline: [
-    { label: "Our Paths Crossed", date: "Date unknown" },
-    { label: "We Matched", date: "[PLACEHOLDER]" },
-    { label: "Our First Conversation", date: "[PLACEHOLDER]" },
-    { label: "Our First Meeting", date: "[PLACEHOLDER]" },
-    { label: "We Fell in Love", date: "[PLACEHOLDER]" },
-    { label: "We Got Engaged", date: "6 July 2025" },
-    { label: "We Say “I Do”", date: "26 December 2026" },
+    { label: "Jalan Kami Bersilang", date: "Tarikh tidak diketahui" },
+    { label: "Kami Dipertemukan", date: "[PLACEHOLDER]" },
+    { label: "Perbualan Pertama", date: "[PLACEHOLDER]" },
+    { label: "Pertemuan Pertama", date: "[PLACEHOLDER]" },
+    { label: "Kami Jatuh Cinta", date: "[PLACEHOLDER]" },
+    { label: "Kami Bertunang", date: "6 Julai 2025" },
+    { label: "Kami Diijabkabulkan", date: "26 Disember 2026" },
   ],
   gallery: [
-    { src: publicAsset("couple-engagement-playful.jpg"), alt: "Amirul and Erni sharing a playful moment at their engagement", position: "center 58%" },
-    { src: publicAsset("couple-waterfall.jpg"), alt: "Amirul and Erni together beside a waterfall", position: "center 52%" },
-    { src: publicAsset("couple-palace.jpg"), alt: "Amirul and Erni visiting a historic palace", position: "center 55%" },
-    { src: publicAsset("couple-cinema.jpg"), alt: "Amirul and Erni enjoying a cinema date", position: "center 45%" },
-    { src: publicAsset("couple-crossed-paths.jpg"), alt: "Amirul and Erni making a heart shape together outdoors", position: "center 70%" },
-    { src: publicAsset("couple-engagement-ring.jpg"), alt: "Amirul and Erni celebrating their engagement", position: "center 55%" },
+    { src: publicAsset("couple-engagement-playful.jpg"), alt: "Erni dan Amirul bergurau pada hari pertunangan", position: "center 58%" },
+    { src: publicAsset("couple-waterfall.jpg"), alt: "Erni dan Amirul bersama di tepi air terjun", position: "center 52%" },
+    { src: publicAsset("couple-palace.jpg"), alt: "Erni dan Amirul melawat sebuah istana bersejarah", position: "center 55%" },
+    { src: publicAsset("couple-cinema.jpg"), alt: "Erni dan Amirul menikmati temu janji di pawagam", position: "center 45%" },
+    { src: publicAsset("couple-crossed-paths.jpg"), alt: "Erni dan Amirul membentuk simbol hati bersama", position: "center 70%" },
+    { src: publicAsset("couple-engagement-ring.jpg"), alt: "Erni dan Amirul meraikan pertunangan mereka", position: "center 55%" },
   ],
-  rsvp: {
-    formUrl: "", // PLACEHOLDER: public Google Form URL.
-    wishesIncluded: true,
-    message: "Sahkan kehadiran, bilangan tetamu, keperluan makanan dan tinggalkan pesanan buat kami melalui borang RSVP.",
+  wishes: {
+    formUrl: "", // PLACEHOLDER: pautan Google Form untuk ucapan sahaja.
+    message: "Titipkan doa dan ucapan buat kami melalui borang ucapan.",
   },
   contacts: [
-    { name: "[ORGANISER NAME]", role: "[RELATIONSHIP / ROLE]", phone: "" }, // Malaysian international format, e.g. 60123456789.
+    { name: "Hayati", role: "Ibu pengantin perempuan", phone: "60178296924" },
+    { name: "Dien", role: "Bapa pengantin perempuan", phone: "60183672932" },
+    { name: "Mardiana", role: "Kakak pengantin lelaki", phone: "601110003141" },
+    { name: "Hidayah", role: "Kakak pengantin lelaki", phone: "601112341237" },
   ],
   faq: [
-    { question: "Pukul berapa tetamu perlu tiba?", answer: "[ANSWER PLACEHOLDER]" },
-    { question: "Apakah tema atau kod pakaian?", answer: "[ANSWER PLACEHOLDER]" },
-    { question: "Adakah kanak-kanak dijemput?", answer: "[ANSWER PLACEHOLDER]" },
-    { question: "Bolehkah saya membawa teman?", answer: "[ANSWER PLACEHOLDER]" },
-    { question: "Adakah tempat letak kereta disediakan?", answer: "[ANSWER PLACEHOLDER]" },
-    { question: "Bilakah tarikh akhir RSVP?", answer: "[ANSWER PLACEHOLDER]" },
-    { question: "Bagaimana saya boleh menghubungi pihak keluarga?", answer: "[ANSWER PLACEHOLDER]" },
+    { question: "Pukul berapa tetamu perlu tiba?", answer: "Majlis bermula pada pukul 11:00 pagi dan berakhir pada pukul 4:00 petang." },
+    { question: "Apakah tema atau kod pakaian?", answer: "[JAWAPAN PLACEHOLDER]" },
+    { question: "Adakah kanak-kanak dijemput?", answer: "[JAWAPAN PLACEHOLDER]" },
+    { question: "Bolehkah saya membawa teman?", answer: "[JAWAPAN PLACEHOLDER]" },
+    { question: "Adakah tempat letak kereta disediakan?", answer: "[JAWAPAN PLACEHOLDER]" },
+    { question: "Perlukah saya mengesahkan kehadiran?", answer: "Tidak. Majlis ini tidak memerlukan pengesahan kehadiran." },
+    { question: "Bagaimana saya boleh menghubungi pihak keluarga?", answer: "Tekan menu Hubungi di bahagian bawah skrin untuk menghubungi wakil keluarga." },
   ],
   gifts: {
-    enabled: true, // Review all payment details before deploying publicly.
-    message: "Doa restu anda adalah hadiah yang paling bermakna buat kami.",
-    bank: "[BANK PLACEHOLDER]",
-    accountHolder: "[ACCOUNT HOLDER PLACEHOLDER]",
-    accountNumber: "[ACCOUNT NUMBER PLACEHOLDER]",
-    duitNowQr: "",
+    enabled: true,
+    message: "Doa restu anda adalah hadiah yang paling bermakna buat kami. Sekiranya ingin memberi hadiah, maklumat berikut disediakan untuk kemudahan anda.",
+    accounts: [
+      {
+        label: "Pengantin Perempuan",
+        bank: "[BANK PENGANTIN PEREMPUAN PLACEHOLDER]",
+        accountHolder: "Erni Alysya",
+        accountNumber: "[NOMBOR AKAUN PLACEHOLDER]",
+        duitNowQr: "", // Tambah fail QR pengantin perempuan kemudian.
+      },
+      {
+        label: "Pengantin Lelaki",
+        bank: "[BANK PENGANTIN LELAKI PLACEHOLDER]",
+        accountHolder: "Muhammad Amirul",
+        accountNumber: "[NOMBOR AKAUN PLACEHOLDER]",
+        duitNowQr: "", // Simpan QR yang diberi sebagai public/images/qr-amirul.png.
+      },
+    ],
   },
   music: {
     enabled: false,
-    src: "", // Only use audio you own or are licensed to use.
+    src: "",
     loop: true,
     volume: 0.2,
   },
   sharing: {
-    whatsappText: "Dengan penuh kesyukuran, kami menjemput anda ke Majlis Perkahwinan Erni & Amirul pada 26 December 2026.",
+    whatsappText: "Dengan penuh kesyukuran, kami menjemput anda ke Majlis Perkahwinan Erni & Amirul pada 26 Disember 2026.",
   },
   images: {
     hero: publicAsset("couple-closing.jpg"),
@@ -117,7 +129,7 @@ export const wedding = {
     music: false,
   },
   closing: {
-    line: "One story, two lives, and a new chapter beginning on 26 December 2026.",
+    line: "Satu kisah, dua kehidupan dan sebuah lembaran baharu bermula pada 26 Disember 2026.",
     thanks: "Terima kasih kerana menjadi sebahagian daripada kisah kami.",
   },
 } as const;
