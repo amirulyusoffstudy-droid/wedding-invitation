@@ -52,20 +52,8 @@ function json_(body) {
   return ContentService.createTextOutput(JSON.stringify(body)).setMimeType(ContentService.MimeType.JSON);
 }
 
-function isApproved_(value) {
-  const normalized = normalizeHeader_(value);
-  return value === true || normalized === "yes" || normalized === "ya" || normalized === "approved";
-}
-
 function setup() {
-  const sheet = getResponseSheet_();
-  const headers = getHeaders_(sheet);
-  let approvedIndex = findHeader_(headers, "Approved");
-  if (approvedIndex === -1) {
-    approvedIndex = sheet.getLastColumn();
-    sheet.getRange(1, approvedIndex + 1).setValue("Approved");
-  }
-  sheet.getRange(2, approvedIndex + 1, Math.max(sheet.getMaxRows() - 1, 1), 1).insertCheckboxes();
+  getResponseSheet_();
 }
 
 function doGet() {
@@ -78,13 +66,11 @@ function doGet() {
     const nameIndex = findHeader_(headers, "Nama");
     const messageIndex = findHeader_(headers, "Ucapan");
     const relationshipIndex = findHeader_(headers, "Hubungan dengan pengantin");
-    const approvedIndex = findHeader_(headers, "Approved");
-    if (nameIndex === -1 || messageIndex === -1 || approvedIndex === -1) {
-      throw new Error("Lajur Nama, Ucapan atau Approved tidak ditemui.");
+    if (nameIndex === -1 || messageIndex === -1) {
+      throw new Error("Lajur Nama atau Ucapan tidak ditemui.");
     }
 
     const wishes = values.slice(1).map((row, index) => ({ row, rowNumber: index + 2 }))
-      .filter(({ row }) => isApproved_(row[approvedIndex]))
       .slice(-50)
       .reverse()
       .map(({ row, rowNumber }) => ({
@@ -119,15 +105,13 @@ function doPost(event) {
       const nameIndex = findHeader_(headers, "Nama");
       const messageIndex = findHeader_(headers, "Ucapan");
       const relationshipIndex = findHeader_(headers, "Hubungan dengan pengantin");
-      const approvedIndex = findHeader_(headers, "Approved");
-      if (nameIndex === -1 || messageIndex === -1 || approvedIndex === -1) {
-        throw new Error("Jalankan fungsi setup() terlebih dahulu.");
+      if (nameIndex === -1 || messageIndex === -1) {
+        throw new Error("Lajur Nama atau Ucapan tidak ditemui.");
       }
       row[0] = new Date();
       row[nameIndex] = name;
       row[messageIndex] = message;
       if (relationshipIndex !== -1) row[relationshipIndex] = relationship;
-      row[approvedIndex] = false;
       sheet.appendRow(row);
       const rowNumber = sheet.getLastRow();
       return json_({

@@ -81,7 +81,6 @@ async function listWishes() {
     return jsonResponse(
       { success: true, data: wishes },
       200,
-      "public, s-maxage=30, stale-while-revalidate=60",
     );
   } catch {
     return jsonResponse({ success: false, error: "Ucapan belum dapat dimuatkan." }, 502);

@@ -90,7 +90,7 @@ https://wa.me/?text=Jemputan%20untuk%20Keluarga%20Ahmad%3A%20https%3A%2F%2Ferni-
 5. Confirm the Open Graph image's absolute URL in `index.html` after any domain change.
 
 No environment variables, paid features, dynamic routes, or `vercel.json` are
-required for the invitation itself. The optional moderated guestbook requires
+required for the invitation itself. The optional guestbook requires
 `GOOGLE_WISHES_SCRIPT_URL`; see [`docs/WISHES_SETUP.md`](docs/WISHES_SETUP.md).
 
 ## GitHub Pages

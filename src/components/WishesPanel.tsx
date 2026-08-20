@@ -59,7 +59,6 @@ export function WishesPanel({ apiUrl, message }: WishesPanelProps) {
   const [formData, setFormData] = useState<WishFormData>(EMPTY_FORM);
   const [fieldErrors, setFieldErrors] = useState<FieldErrors>({});
   const [wishes, setWishes] = useState<Wish[]>([]);
-  const [pendingWish, setPendingWish] = useState<Wish | null>(null);
   const [loadStatus, setLoadStatus] = useState<LoadStatus>("loading");
   const [submitStatus, setSubmitStatus] = useState<SubmitStatus>("idle");
   const [reloadKey, setReloadKey] = useState(0);
@@ -124,7 +123,7 @@ export function WishesPanel({ apiUrl, message }: WishesPanelProps) {
       if (!response.ok || !result.success || !result.data) {
         throw new Error(result.error || "Ucapan tidak dapat dihantar");
       }
-      setPendingWish(result.data);
+      setWishes((current) => [result.data as Wish, ...current.filter((wish) => wish.id !== result.data?.id)]);
       setFormData(EMPTY_FORM);
       setSubmitStatus("success");
     } catch {
@@ -136,7 +135,7 @@ export function WishesPanel({ apiUrl, message }: WishesPanelProps) {
     <div className="guestbook-intro">
       <Heart aria-hidden="true" />
       <p>{message}</p>
-      <small>Ucapan akan dipaparkan selepas disemak oleh pengantin.</small>
+      <small>Ucapan anda akan dipaparkan terus selepas dihantar.</small>
     </div>
 
     <form className="wish-form" onSubmit={submitWish} aria-busy={submitStatus === "submitting"} noValidate>
@@ -197,7 +196,7 @@ export function WishesPanel({ apiUrl, message }: WishesPanelProps) {
           : <><Send aria-hidden="true" /> Hantar Ucapan</>}
       </button>
       <div className="wish-feedback" aria-live="polite">
-        {submitStatus === "success" ? <p className="is-success">Ucapan diterima dan sedang menunggu semakan.</p> : null}
+        {submitStatus === "success" ? <p className="is-success">Ucapan berjaya dihantar dan telah dipaparkan.</p> : null}
         {submitStatus === "error" ? <p className="is-error">Ucapan tidak dapat dihantar. Cuba sekali lagi.</p> : null}
       </div>
     </form>
@@ -209,11 +208,6 @@ export function WishesPanel({ apiUrl, message }: WishesPanelProps) {
           <RefreshCw aria-hidden="true" />
         </button>
       </div>
-
-      {pendingWish ? <article className="wish-card is-pending">
-        <p>{pendingWish.message}</p>
-        <footer><strong>{pendingWish.name}</strong><span>Menunggu semakan</span></footer>
-      </article> : null}
 
       {loadStatus === "loading" ? <p className="wish-state">Memuatkan ucapan…</p> : null}
       {loadStatus === "error" ? <div className="wish-state">
