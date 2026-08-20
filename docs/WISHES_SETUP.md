@@ -13,8 +13,8 @@ keeps the Google Apps Script URL out of browser code and validates public input.
 4. If using a standalone project, replace
    `PASTE_RESPONSE_SPREADSHEET_ID_OR_URL_HERE` with the URL or ID copied in step 1.
 5. Save, select the `setup` function, and click **Run**.
-6. Approve Google's permission prompt. A successful run confirms the script can
-   access the response tab.
+6. Approve Google's permission prompt. The one-time setup removes the obsolete
+   **Approved** column and compacts existing responses directly below the header.
 7. Choose **Deploy > New deployment > Web app**.
 8. Set **Execute as** to **Me** and **Who has access** to **Anyone**.
 9. Deploy and copy the URL ending in `/exec`. Do not use the `/dev` test URL.
@@ -27,5 +27,6 @@ Add the `/exec` URL as the production environment variable
 ## Public wishes
 
 New wishes are displayed automatically. The invitation refreshes wishes whenever
-the Ucapan panel opens or the refresh button is pressed. The old **Approved**
-column can be left in the spreadsheet; it is no longer used.
+the Ucapan panel opens or the refresh button is pressed. New rows are positioned
+from actual response content, so formatting or empty table rows cannot push them
+far down the spreadsheet.

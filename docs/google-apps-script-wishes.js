@@ -1,7 +1,7 @@
 /**
  * Guestbook adapter for the Google Sheet linked to the wedding wishes form.
  * Paste this entire file into either a spreadsheet-bound or standalone Apps
- * Script project. For a standalone project, set SPREADSHEET_ID below.
+ * Script project. For a standalone project, set SPREADSHEET_ID_OR_URL below.
  */
 
 const SPREADSHEET_ID_OR_URL = "PASTE_RESPONSE_SPREADSHEET_ID_OR_URL_HERE";
@@ -40,6 +40,30 @@ function findHeader_(headers, name) {
   return headers.indexOf(normalizeHeader_(name));
 }
 
+function isResponseRow_(row, nameIndex, messageIndex) {
+  return Boolean(cleanSingleLine_(row[nameIndex], 80) || cleanMessage_(row[messageIndex]));
+}
+
+function getResponseIndexes_(sheet) {
+  const headers = getHeaders_(sheet);
+  const nameIndex = findHeader_(headers, "Nama");
+  const messageIndex = findHeader_(headers, "Ucapan");
+  if (nameIndex === -1 || messageIndex === -1) {
+    throw new Error("Lajur Nama atau Ucapan tidak ditemui.");
+  }
+  return { headers, nameIndex, messageIndex };
+}
+
+function getNextResponseRow_(sheet, nameIndex, messageIndex) {
+  const dataRowCount = Math.max(sheet.getLastRow() - 1, 1);
+  const rows = sheet.getRange(2, 1, dataRowCount, sheet.getLastColumn()).getValues();
+  let lastResponseRow = 1;
+  rows.forEach((row, index) => {
+    if (isResponseRow_(row, nameIndex, messageIndex)) lastResponseRow = index + 2;
+  });
+  return lastResponseRow + 1;
+}
+
 function cleanSingleLine_(value, maxLength) {
   return String(value || "").replace(/[\u0000-\u001F\u007F]/g, " ").replace(/\s+/g, " ").trim().slice(0, maxLength);
 }
@@ -53,7 +77,20 @@ function json_(body) {
 }
 
 function setup() {
-  getResponseSheet_();
+  const sheet = getResponseSheet_();
+  const approvedIndex = findHeader_(getHeaders_(sheet), "Approved");
+  if (approvedIndex !== -1) sheet.deleteColumn(approvedIndex + 1);
+
+  const { nameIndex, messageIndex } = getResponseIndexes_(sheet);
+  const dataRowCount = Math.max(sheet.getMaxRows() - 1, 1);
+  const dataRange = sheet.getRange(2, 1, dataRowCount, sheet.getLastColumn());
+  const responseRows = dataRange.getValues()
+    .filter((row) => isResponseRow_(row, nameIndex, messageIndex));
+
+  dataRange.clearContent();
+  if (responseRows.length) {
+    sheet.getRange(2, 1, responseRows.length, sheet.getLastColumn()).setValues(responseRows);
+  }
 }
 
 function doGet() {
@@ -62,13 +99,8 @@ function doGet() {
     const values = sheet.getDataRange().getValues();
     if (values.length < 2) return json_({ success: true, data: [] });
 
-    const headers = values[0].map(normalizeHeader_);
-    const nameIndex = findHeader_(headers, "Nama");
-    const messageIndex = findHeader_(headers, "Ucapan");
+    const { headers, nameIndex, messageIndex } = getResponseIndexes_(sheet);
     const relationshipIndex = findHeader_(headers, "Hubungan dengan pengantin");
-    if (nameIndex === -1 || messageIndex === -1) {
-      throw new Error("Lajur Nama atau Ucapan tidak ditemui.");
-    }
 
     const wishes = values.slice(1).map((row, index) => ({ row, rowNumber: index + 2 }))
       .slice(-50)
@@ -100,20 +132,16 @@ function doPost(event) {
     lock.waitLock(10000);
     try {
       const sheet = getResponseSheet_();
-      const headers = getHeaders_(sheet);
+      const { headers, nameIndex, messageIndex } = getResponseIndexes_(sheet);
       const row = new Array(headers.length).fill("");
-      const nameIndex = findHeader_(headers, "Nama");
-      const messageIndex = findHeader_(headers, "Ucapan");
       const relationshipIndex = findHeader_(headers, "Hubungan dengan pengantin");
-      if (nameIndex === -1 || messageIndex === -1) {
-        throw new Error("Lajur Nama atau Ucapan tidak ditemui.");
-      }
       row[0] = new Date();
       row[nameIndex] = name;
       row[messageIndex] = message;
       if (relationshipIndex !== -1) row[relationshipIndex] = relationship;
-      sheet.appendRow(row);
-      const rowNumber = sheet.getLastRow();
+      const rowNumber = getNextResponseRow_(sheet, nameIndex, messageIndex);
+      if (rowNumber > sheet.getMaxRows()) sheet.insertRowAfter(sheet.getMaxRows());
+      sheet.getRange(rowNumber, 1, 1, row.length).setValues([row]);
       return json_({
         success: true,
         data: {
