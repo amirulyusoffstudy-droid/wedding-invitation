@@ -71,7 +71,7 @@ export const wedding = {
     { src: publicAsset("couple-engagement-ring.jpg"), alt: "Erni dan Amirul meraikan pertunangan mereka", position: "center 55%" },
   ],
   wishes: {
-    formUrl: "", // PLACEHOLDER: pautan Google Form untuk ucapan sahaja.
+    formUrl: "https://forms.gle/Cs3qQpv96sH8VWL97",
     message: "Titipkan doa dan ucapan buat kami melalui borang ucapan.",
   },
   contacts: [
@@ -98,7 +98,7 @@ export const wedding = {
         bank: "[BANK PENGANTIN PEREMPUAN PLACEHOLDER]",
         accountHolder: "Erni Alysya",
         accountNumber: "[NOMBOR AKAUN PLACEHOLDER]",
-        duitNowQr: "", // Tambah fail QR pengantin perempuan kemudian.
+        duitNowQr: publicAsset("qr-erni.jpeg"),
       },
       {
         label: "Pengantin Lelaki",
