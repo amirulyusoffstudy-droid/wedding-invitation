@@ -1,4 +1,4 @@
-import { useEffect, useRef, useState } from "react";
+import { useCallback, useEffect, useRef, useState } from "react";
 import {
   CalendarDays, Clipboard, Gift, Heart, MapPin, MessageCircle,
   Navigation, Phone, Share2, X,
@@ -8,15 +8,15 @@ import { downloadCalendar } from "./utils/calendar";
 import { getGuestName } from "./utils/guest";
 
 type PanelName = "contact" | "location" | "gift" | "wishes";
+const FOCUSABLE_SELECTOR = "a[href], button:not([disabled]), [tabindex]:not([tabindex='-1'])";
 const isConfigured = (value: string) => Boolean(value && !value.includes("PLACEHOLDER"));
 
-function BotanicalFrame() {
-  return <div className="botanical-frame" aria-hidden="true">
-    <div className="botanical botanical-top">❀ <i>✤</i> ❁</div>
-    <div className="botanical botanical-left">⌇<i>❀</i>⌇</div>
-    <div className="botanical botanical-right">⌇<i>❁</i>⌇</div>
-    <div className="botanical botanical-bottom">❁ <i>✤</i> ❀</div>
-  </div>;
+function wasInvitationOpened() {
+  try {
+    return sessionStorage.getItem("invitation-opened") === "true";
+  } catch {
+    return false;
+  }
 }
 
 function Panel({ title, close, children }: {
@@ -25,18 +25,43 @@ function Panel({ title, close, children }: {
   children: React.ReactNode;
 }) {
   const closeRef = useRef<HTMLButtonElement>(null);
+  const panelRef = useRef<HTMLElement>(null);
 
   useEffect(() => {
     const previous = document.activeElement as HTMLElement | null;
+    const previousOverflow = document.body.style.overflow;
     closeRef.current?.focus();
     document.body.style.overflow = "hidden";
     const keydown = (event: KeyboardEvent) => {
-      if (event.key === "Escape") close();
+      if (event.key === "Escape") {
+        event.preventDefault();
+        close();
+        return;
+      }
+      if (event.key !== "Tab") return;
+
+      const focusableElements = Array.from(
+        panelRef.current?.querySelectorAll<HTMLElement>(FOCUSABLE_SELECTOR) ?? [],
+      );
+      const first = focusableElements[0];
+      const last = focusableElements.at(-1);
+      if (!first || !last) return;
+
+      if (!panelRef.current?.contains(document.activeElement)) {
+        event.preventDefault();
+        (event.shiftKey ? last : first).focus();
+      } else if (event.shiftKey && document.activeElement === first) {
+        event.preventDefault();
+        last.focus();
+      } else if (!event.shiftKey && document.activeElement === last) {
+        event.preventDefault();
+        first.focus();
+      }
     };
     document.addEventListener("keydown", keydown);
     return () => {
       document.removeEventListener("keydown", keydown);
-      document.body.style.overflow = "";
+      document.body.style.overflow = previousOverflow;
       previous?.focus();
     };
   }, [close]);
@@ -44,8 +69,8 @@ function Panel({ title, close, children }: {
   return <div className="panel-backdrop" onMouseDown={(event) => {
     if (event.target === event.currentTarget) close();
   }}>
-    <section className="panel" role="dialog" aria-modal="true" aria-labelledby="panel-title">
-      <div className="panel-handle" />
+    <section ref={panelRef} className="panel" role="dialog" aria-modal="true" aria-labelledby="panel-title">
+      <div className="panel-handle" aria-hidden="true" />
       <header>
         <div><small>Erni & Amirul</small><h2 id="panel-title">{title}</h2></div>
         <button ref={closeRef} onClick={close} aria-label={`Tutup ${title}`}><X /></button>
@@ -61,28 +86,58 @@ function ActionLink({ href, icon, children }: {
   children: React.ReactNode;
 }) {
   if (!href) return <button className="panel-action" disabled>{icon}{children}</button>;
-  return <a className="panel-action" href={href} target="_blank" rel="noreferrer">{icon}{children}</a>;
+  const opensNewTab = /^https?:\/\//.test(href);
+  return <a
+    className="panel-action"
+    href={href}
+    {...(opensNewTab ? { target: "_blank", rel: "noreferrer" } : {})}
+  >{icon}{children}</a>;
 }
 
 export default function App() {
-  const [opened, setOpened] = useState(() => sessionStorage.getItem("invitation-opened") === "true");
+  const [opened, setOpened] = useState(wasInvitationOpened);
   const [opening, setOpening] = useState(false);
   const [panel, setPanel] = useState<PanelName | null>(null);
   const [toast, setToast] = useState("");
   const [guest] = useState(() => getGuestName(window.location.search));
+  const openingTimerRef = useRef<number | undefined>(undefined);
+  const toastTimerRef = useRef<number | undefined>(undefined);
 
-  const showToast = (message: string) => {
+  const showToast = useCallback((message: string) => {
+    window.clearTimeout(toastTimerRef.current);
     setToast(message);
-    window.setTimeout(() => setToast(""), 2400);
-  };
+    toastTimerRef.current = window.setTimeout(() => setToast(""), 2400);
+  }, []);
+
+  useEffect(() => () => {
+    window.clearTimeout(openingTimerRef.current);
+    window.clearTimeout(toastTimerRef.current);
+  }, []);
 
   const openInvitation = () => {
+    if (opening) return;
     setOpening(true);
-    window.setTimeout(() => {
-      sessionStorage.setItem("invitation-opened", "true");
+    openingTimerRef.current = window.setTimeout(() => {
+      try {
+        sessionStorage.setItem("invitation-opened", "true");
+      } catch {
+        // The invitation still opens when storage is unavailable.
+      }
       setOpened(true);
       requestAnimationFrame(() => document.getElementById("jemputan")?.scrollIntoView());
     }, 420);
+  };
+
+  const closePanel = useCallback(() => setPanel(null), []);
+
+  const copyAccountNumber = async (accountNumber: string) => {
+    try {
+      if (!navigator.clipboard) throw new Error("Clipboard API unavailable");
+      await navigator.clipboard.writeText(accountNumber);
+      showToast("Nombor akaun telah disalin");
+    } catch {
+      showToast("Nombor akaun tidak dapat disalin");
+    }
   };
 
   const share = async () => {
@@ -100,19 +155,17 @@ export default function App() {
 
   return <div className="invitation-app">
     {!opened && <div className={`opening-cover ${opening ? "is-opening" : ""}`}>
-      <BotanicalFrame />
       <div className="opening-card">
         <span>Walimatul Urus</span>
         <h1>Erni <i>&</i> Amirul</h1>
         <p className="opening-date">26 Disember 2026</p>
         <div className="guest-name"><small>Kepada</small><strong>{guest ?? "Tetamu yang dihormati"}</strong></div>
-        <button onClick={openInvitation}>Buka Jemputan <Heart /></button>
+        <button onClick={openInvitation} disabled={opening}>Buka Jemputan <Heart /></button>
       </div>
     </div>}
 
-    <main id="jemputan">
+    <main id="jemputan" inert={!opened || panel !== null}>
       <section className="invite-page title-page">
-        <BotanicalFrame />
         <div className="page-content">
           <p className="kicker">Walimatul Urus</p>
           <p className="theme-line">{wedding.couple.theme}</p>
@@ -126,7 +179,6 @@ export default function App() {
       </section>
 
       <section className="invite-page formal-page">
-        <BotanicalFrame />
         <div className="page-content">
           <p className="arabic" lang="ar" dir="rtl">{wedding.invitation.bismillah}</p>
           <p>Assalamualaikum warahmatullahi wabarakatuh</p>
@@ -145,14 +197,15 @@ export default function App() {
       </section>
 
       <section className="invite-page details-page">
-        <BotanicalFrame />
         <div className="page-content">
           <h2>Butiran Majlis</h2>
           <dl className="event-facts">
             <div><dt>Tempat</dt><dd>{wedding.event.venue}<small>{wedding.event.address}</small></dd></div>
             <div><dt>Tarikh</dt><dd>{wedding.event.day}, {wedding.event.date}</dd></div>
             <div><dt>Waktu</dt><dd>{wedding.event.time}</dd></div>
-            <div><dt>Tema Busana</dt><dd>{wedding.event.dressCode}</dd></div>
+            {isConfigured(wedding.event.dressCode)
+              ? <div><dt>Tema Busana</dt><dd>{wedding.event.dressCode}</dd></div>
+              : null}
           </dl>
           <button className="calendar-button" onClick={() => {
             if (!downloadCalendar()) showToast("Kalendar belum dapat dijana");
@@ -167,7 +220,6 @@ export default function App() {
       </section>
 
       <section className="invite-page prayer-page">
-        <BotanicalFrame />
         <div className="page-content">
           <p className="prayer">Ya Allah, berkatilah majlis perkahwinan ini. Limpahkanlah barakah dan rahmat kepada kedua mempelai. Kurniakanlah mereka zuriat yang soleh dan solehah, kekalkanlah jodoh mereka di dunia dan di akhirat, serta sempurnakanlah agama mereka dengan berkat ikatan ini.</p>
           <Heart className="prayer-heart" />
@@ -179,14 +231,14 @@ export default function App() {
       </section>
     </main>
 
-    {opened && <nav className="bottom-menu" aria-label="Menu utama">
+    {opened && <nav className="bottom-menu" aria-label="Menu utama" inert={panel !== null}>
       <button onClick={() => setPanel("contact")}><Phone /><span>Hubungi</span></button>
       <button onClick={() => setPanel("location")}><MapPin /><span>Lokasi</span></button>
       <button onClick={() => setPanel("gift")}><Gift /><span>Hadiah</span></button>
       <button onClick={() => setPanel("wishes")}><MessageCircle /><span>Ucapan</span></button>
     </nav>}
 
-    {panel === "contact" && <Panel title="Hubungi" close={() => setPanel(null)}>
+    {panel === "contact" && <Panel title="Hubungi" close={closePanel}>
       <div className="contact-list">{wedding.contacts.map((contact) => {
         const number = contact.phone.replace(/\D/g, "");
         return <article key={contact.name}>
@@ -197,14 +249,14 @@ export default function App() {
       })}</div>
     </Panel>}
 
-    {panel === "location" && <Panel title="Lokasi" close={() => setPanel(null)}>
+    {panel === "location" && <Panel title="Lokasi" close={closePanel}>
       <div className="location-panel"><MapPin /><h3>{wedding.event.venue}</h3><p>{wedding.event.address}</p>
         <div><ActionLink href={wedding.links.maps} icon={<MapPin />}>Google Maps</ActionLink>
           <ActionLink href={wedding.links.waze} icon={<Navigation />}>Waze</ActionLink></div>
       </div>
     </Panel>}
 
-    {panel === "gift" && <Panel title="Hadiah" close={() => setPanel(null)}>
+    {panel === "gift" && <Panel title="Hadiah" close={closePanel}>
       <p className="panel-note">{wedding.gifts.message}</p>
       <div className="gift-list">{wedding.gifts.accounts.map((account) => <article key={account.label}>
         <h3>{account.label}</h3>
@@ -214,14 +266,13 @@ export default function App() {
         {isConfigured(account.bank) && <span>{account.bank}</span>}
         <strong>{account.accountHolder}</strong>
         {isConfigured(account.accountNumber) && <><code>{account.accountNumber}</code>
-          <button onClick={() => {
-            navigator.clipboard.writeText(account.accountNumber);
-            showToast("Nombor akaun telah disalin");
-          }}><Clipboard /> Salin nombor akaun</button></>}
+          <button onClick={() => copyAccountNumber(account.accountNumber)}>
+            <Clipboard /> Salin nombor akaun
+          </button></>}
       </article>)}</div>
     </Panel>}
 
-    {panel === "wishes" && <Panel title="Ucapan" close={() => setPanel(null)}>
+    {panel === "wishes" && <Panel title="Ucapan" close={closePanel}>
       <div className="wishes-panel"><Heart /><p>{wedding.wishes.message}</p>
         {wedding.wishes.formUrl
           ? <a href={wedding.wishes.formUrl} target="_blank" rel="noreferrer">Tulis Ucapan</a>
