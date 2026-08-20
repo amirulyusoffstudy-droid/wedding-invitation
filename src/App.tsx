@@ -4,11 +4,12 @@ import {
   Navigation, Phone, Share2, X,
 } from "lucide-react";
 import { wedding } from "./data/wedding";
+import { WishesPanel } from "./components/WishesPanel";
 import { downloadCalendar } from "./utils/calendar";
 import { getGuestName } from "./utils/guest";
 
 type PanelName = "contact" | "location" | "gift" | "wishes";
-const FOCUSABLE_SELECTOR = "a[href], button:not([disabled]), [tabindex]:not([tabindex='-1'])";
+const FOCUSABLE_SELECTOR = "a[href], button:not([disabled]), input:not([disabled]):not([tabindex='-1']), textarea:not([disabled]), select:not([disabled]), [tabindex]:not([tabindex='-1'])";
 const isConfigured = (value: string) => Boolean(value && !value.includes("PLACEHOLDER"));
 
 function wasInvitationOpened() {
@@ -273,11 +274,7 @@ export default function App() {
     </Panel>}
 
     {panel === "wishes" && <Panel title="Ucapan" close={closePanel}>
-      <div className="wishes-panel"><Heart /><p>{wedding.wishes.message}</p>
-        {wedding.wishes.formUrl
-          ? <a href={wedding.wishes.formUrl} target="_blank" rel="noreferrer">Tulis Ucapan</a>
-          : <button disabled>Borang ucapan akan dibuka kemudian</button>}
-      </div>
+      <WishesPanel apiUrl={wedding.wishes.apiUrl} message={wedding.wishes.message} />
     </Panel>}
 
     {toast && <div className="toast" role="status">{toast}</div>}

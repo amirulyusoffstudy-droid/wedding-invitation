@@ -4,5 +4,6 @@ dist/
 .DS_Store
 *.log
 .vercel/
+.env*.local
 # Keep original personal photos local. Optimized public copies live in public/images.
 us/

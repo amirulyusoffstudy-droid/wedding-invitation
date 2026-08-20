@@ -71,8 +71,8 @@ export const wedding = {
     { src: publicAsset("couple-engagement-ring.jpg"), alt: "Erni dan Amirul meraikan pertunangan mereka", position: "center 55%" },
   ],
   wishes: {
-    formUrl: "https://forms.gle/Cs3qQpv96sH8VWL97",
-    message: "Titipkan doa dan ucapan buat kami melalui borang ucapan.",
+    apiUrl: "https://erni-amirul.vercel.app/api/wishes",
+    message: "Titipkan doa dan ucapan buat kami tanpa meninggalkan jemputan ini.",
   },
   contacts: [
     { name: "Hayati", role: "Ibu pengantin perempuan", phone: "60178296924" },
