@@ -95,16 +95,16 @@ export const wedding = {
     accounts: [
       {
         label: "Pengantin Perempuan",
-        bank: "[BANK PENGANTIN PEREMPUAN PLACEHOLDER]",
+        bank: "BANK ISLAM",
         accountHolder: "Erni Alysya",
-        accountNumber: "[NOMBOR AKAUN PLACEHOLDER]",
+        accountNumber: "12056022877996",
         duitNowQr: publicAsset("qr-erni.jpeg"),
       },
       {
         label: "Pengantin Lelaki",
-        bank: "[BANK PENGANTIN LELAKI PLACEHOLDER]",
+        bank: "BANK ISLAM",
         accountHolder: "Muhammad Amirul",
-        accountNumber: "[NOMBOR AKAUN PLACEHOLDER]",
+        accountNumber: "14041020740704",
         duitNowQr: publicAsset("qr-amirul.jpeg"),
       },
     ],
