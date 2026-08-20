@@ -22,7 +22,7 @@ export function downloadCalendar() {
   const lines = [
     "BEGIN:VCALENDAR", "VERSION:2.0", "PRODID:-//Erni & Amirul//Wedding Invitation//EN",
     "CALSCALE:GREGORIAN", "METHOD:PUBLISH", "BEGIN:VEVENT",
-    `UID:amirul-erni-20261226@amirul-erni.vercel.app`,
+    `UID:erni-amirul-20261226@erni-amirul.vercel.app`,
     `DTSTAMP:${new Date().toISOString().replace(/[-:]/g, "").replace(/\.\d{3}/, "")}`,
     `DTSTART;TZID=Asia/Kuala_Lumpur:${localStamp(weddingDate, wedding.event.startTime)}`,
     `DTEND;TZID=Asia/Kuala_Lumpur:${localStamp(weddingDate, wedding.event.endTime)}`,

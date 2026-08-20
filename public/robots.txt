@@ -1,4 +1,4 @@
 User-agent: *
 Allow: /
 
-Sitemap: https://amirulyusoffstudy-droid.github.io/wedding-invitation/sitemap.xml
+Sitemap: https://erni-amirul.vercel.app/sitemap.xml

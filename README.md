@@ -58,7 +58,7 @@ The site intentionally never displays fake submissions.
 Use `?to=` with URL-encoded text:
 
 ```text
-https://amirul-erni.vercel.app/?to=Keluarga+Ahmad
+https://erni-amirul.vercel.app/?to=Keluarga+Ahmad
 ```
 
 JavaScript renders the value strictly as text, removes control characters,
@@ -66,7 +66,7 @@ normalises whitespace, and limits it to 80 characters. In WhatsApp, create a
 link with:
 
 ```text
-https://wa.me/?text=Jemputan%20untuk%20Keluarga%20Ahmad%3A%20https%3A%2F%2Famirul-erni.vercel.app%2F%3Fto%3DKeluarga%2BAhmad
+https://wa.me/?text=Jemputan%20untuk%20Keluarga%20Ahmad%3A%20https%3A%2F%2Ferni-amirul.vercel.app%2F%3Fto%3DKeluarga%2BAhmad
 ```
 
 ## Maps, Waze, contact, and music
@@ -86,8 +86,8 @@ https://wa.me/?text=Jemputan%20untuk%20Keluarga%20Ahmad%3A%20https%3A%2F%2Famiru
 2. In Vercel, choose **Add New → Project** and import the repository.
 3. Vercel should detect Vite. Use build command `npm run build` and output
    directory `dist`.
-4. Deploy, then assign `amirul-erni.vercel.app` if available.
-5. Replace the Open Graph image and confirm its absolute URL in `index.html`.
+4. The production project is deployed at `https://erni-amirul.vercel.app`.
+5. Confirm the Open Graph image's absolute URL in `index.html` after any domain change.
 
 No environment variables, paid features, dynamic routes, or `vercel.json` are
 required.
