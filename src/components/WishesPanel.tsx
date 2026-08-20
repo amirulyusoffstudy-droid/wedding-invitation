@@ -43,7 +43,7 @@ function getFieldError(field: keyof WishFormData, value: string) {
   if (field === "message" && !trimmedValue) return "Tuliskan ucapan atau doa anda.";
   if (field === "name" && trimmedValue.length > 80) return "Nama mestilah 80 aksara atau kurang.";
   if (field === "message" && trimmedValue.length > 500) return "Ucapan mestilah 500 aksara atau kurang.";
-  if (field === "relationship" && trimmedValue.length > 80) return "Hubungan mestilah 80 aksara atau kurang.";
+  if (field === "relationship" && trimmedValue.length > 80) return "Daripada mestilah 80 aksara atau kurang.";
   return "";
 }
 
@@ -174,13 +174,14 @@ export function WishesPanel({ apiUrl, message }: WishesPanelProps) {
         {fieldErrors.message ? <span id={`${messageId}-error`} className="field-error">{fieldErrors.message}</span> : null}
       </div>
       <div className="wish-field">
-        <label htmlFor={relationshipId}>Hubungan dengan pengantin <span>(pilihan)</span></label>
+        <label htmlFor={relationshipId}>Daripada <span>(pilihan)</span></label>
         <input
           id={relationshipId}
           name="relationship"
           value={formData.relationship}
           onChange={(event) => updateField("relationship", event.target.value)}
           onBlur={() => validateField("relationship")}
+          placeholder="Contoh: Kawan Erni, keluarga Amirul"
           maxLength={80}
           aria-invalid={Boolean(fieldErrors.relationship)}
           aria-describedby={fieldErrors.relationship ? `${relationshipId}-error` : undefined}
