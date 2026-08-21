@@ -8,10 +8,11 @@ Firebase rule presence.
 **Change policy:** Report only. No application behavior, cloud configuration,
 or deployed service was changed during this review.
 
-> **Branch update — 21 August 2026:** Local remediations were implemented on
-> `security-hardening`. Nothing in this branch has been pushed, merged, or
-> deployed. See [`SECURITY_DEPLOYMENT.md`](SECURITY_DEPLOYMENT.md) for the
-> remaining secret, Preview, Apps Script, and Vercel Firewall steps.
+> **Deployment update — 21 August 2026:** The remediations were merged into
+> `main` and deployed to Vercel. The protected Apps Script write path,
+> spreadsheet formula neutralization, and restricted origins were verified in
+> Preview; the live write path, browser headers, and Vercel Firewall rate limit
+> were verified after the production cutover.
 
 ## Executive summary
 
@@ -21,7 +22,7 @@ keeps the Google Apps Script URL out of the browser bundle. HTTPS/HSTS is active
 common secret patterns were not found in tracked source, npm registry signatures
 verified, and the published JPEGs did not expose GPS metadata.
 
-Two findings should be fixed before broadly sharing the invitation:
+The review identified two high-priority findings before broadly sharing the invitation:
 
 1. Anyone can automate guestbook writes without authentication or a durable
    rate limit, including by calling the Apps Script endpoint directly if its URL
@@ -30,7 +31,9 @@ Two findings should be fixed before broadly sharing the invitation:
    through `setValues()`, creating a formula-injection path in the response
    spreadsheet.
 
-**Overall risk:** High until SEC-01 and SEC-02 are addressed; moderate afterward.
+Both high-priority findings are now remediated. **Residual risk:** Moderate,
+primarily because event, contact, financial, and guestbook information remains
+intentionally public to anyone with the invitation URL.
 
 ## Architecture and trust boundaries
 
@@ -63,15 +66,15 @@ Assets requiring protection or deliberate exposure decisions:
 
 | ID | Severity | Finding | Status |
 |---|---|---|---|
-| SEC-01 | High | Public guestbook writes have no authentication or durable rate limit | Partially implemented locally; secret/WAF deployment pending |
-| SEC-02 | High | Spreadsheet formula injection is possible through guest input | Implemented locally; Apps Script deployment pending |
-| SEC-03 | Medium | Sensitive event and financial details are intentionally public and indexed | No-index implemented locally; account exposure accepted |
-| SEC-04 | Medium | Personalized guest names are carried in shareable query-string URLs | Implemented locally |
-| SEC-05 | Medium | Browser hardening headers are incomplete | Implemented locally for Vercel |
-| SEC-06 | Medium | Dependency audit reports four high-severity advisories | Implemented locally; audit now clean |
+| SEC-01 | High | Public guestbook writes have no authentication or durable rate limit | Remediated and verified in production |
+| SEC-02 | High | Spreadsheet formula injection is possible through guest input | Remediated; literal readback verified through Preview |
+| SEC-03 | Medium | Sensitive event and financial details are intentionally public and indexed | No-index deployed; account exposure accepted |
+| SEC-04 | Medium | Personalized guest names are carried in shareable query-string URLs | Remediated and deployed |
+| SEC-05 | Medium | Browser hardening headers are incomplete | Remediated and verified in production |
+| SEC-06 | Medium | Dependency audit reports four high-severity advisories | Remediated; audit now clean |
 | SEC-07 | Low | Guestbook PII has no stated retention/deletion policy or notice | Notice implemented; retention process pending |
-| SEC-08 | Low | Direct Apps Script errors reveal internal details | Implemented locally; Apps Script deployment pending |
-| SEC-09 | Low | CI actions use mutable tags and dependency scripts run without an allowlist | Implemented locally |
+| SEC-08 | Low | Direct Apps Script errors reveal internal details | Remediated and deployed |
+| SEC-09 | Low | CI actions use mutable tags and dependency scripts run without an allowlist | Remediated and deployed |
 
 ## Detailed findings
 

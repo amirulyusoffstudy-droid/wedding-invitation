@@ -65,7 +65,8 @@ first would reject writes from the current production API.
 - Unknown browser origin returns `403`.
 - Non-JSON request returns `415`.
 - Request larger than 4 KiB returns `413`.
-- Excess rapid submissions return `429` from Vercel Firewall.
+- Excess rapid submissions are blocked by Vercel Firewall. The current
+  `rate_limit` rule uses Vercel's deny exceed action and returns `403`.
 - CSP, `nosniff`, frame denial, referrer policy, and no-index headers are present.
 - Current production invitation and GitHub Pages origins can both read wishes.
 - The current Vercel Preview deployment origin can submit wishes without opening
