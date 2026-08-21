@@ -4,7 +4,7 @@
  * Script project. For a standalone project, set SPREADSHEET_ID_OR_URL below.
  */
 
-const SPREADSHEET_ID_OR_URL = "PASTE_RESPONSE_SPREADSHEET_ID_OR_URL_HERE";
+const SPREADSHEET_ID_OR_URL = "1mzavMJrpXr9pcX4L-3tayJVsLKmte6U7DjX4DJWF1uE";
 const MAX_STORED_WISHES = 5000;
 
 function normalizeHeader_(value) {
