@@ -16,7 +16,16 @@ npm install
 npm run dev
 ```
 
-Open the local URL printed by Vite. Production checks:
+For isolated security testing with the local mock guestbook and Vercel Function:
+
+```powershell
+npm.cmd run dev:secure
+```
+
+See [`docs/SECURITY_DEPLOYMENT.md`](docs/SECURITY_DEPLOYMENT.md) before any
+security branch deployment. Local mock submissions never write to Google Sheets.
+
+Open the local URL printed by the selected command. Production checks:
 
 ```bash
 npm run lint

@@ -118,6 +118,7 @@ export default function App() {
   const openInvitation = () => {
     if (opening) return;
     setOpening(true);
+    const openDelay = window.matchMedia("(prefers-reduced-motion: reduce)").matches ? 0 : 420;
     openingTimerRef.current = window.setTimeout(() => {
       try {
         sessionStorage.setItem("invitation-opened", "true");
@@ -126,7 +127,7 @@ export default function App() {
       }
       setOpened(true);
       requestAnimationFrame(() => document.getElementById("jemputan")?.scrollIntoView());
-    }, 420);
+    }, openDelay);
   };
 
   const closePanel = useCallback(() => setPanel(null), []);
@@ -142,11 +143,14 @@ export default function App() {
   };
 
   const share = async () => {
-    const data = { title: wedding.event.title, text: wedding.sharing.whatsappText, url: window.location.href };
+    const shareUrl = new URL(window.location.href);
+    shareUrl.searchParams.delete("to");
+    const publicShareUrl = shareUrl.toString();
+    const data = { title: wedding.event.title, text: wedding.sharing.whatsappText, url: publicShareUrl };
     try {
       if (navigator.share) await navigator.share(data);
       else {
-        await navigator.clipboard.writeText(window.location.href);
+        await navigator.clipboard.writeText(publicShareUrl);
         showToast("Pautan jemputan telah disalin");
       }
     } catch (error) {
@@ -157,30 +161,32 @@ export default function App() {
   return <div className="invitation-app">
     {!opened && <div className={`opening-cover ${opening ? "is-opening" : ""}`}>
       <div className="opening-card">
-        <span>Walimatul Urus</span>
-        <h1>Erni <i>&</i> Amirul</h1>
-        <p className="opening-date">26 Disember 2026</p>
+        <div className="opening-monogram" aria-hidden="true"><span>E</span><i>&</i><span>A</span></div>
+        <span>Jemputan Walimatul Urus</span>
+        <p className="opening-intro">Dengan penuh kesyukuran, kami menjemput anda meraikan hari bahagia kami.</p>
         <div className="guest-name"><small>Kepada</small><strong>{guest ?? "Tetamu yang dihormati"}</strong></div>
-        <button onClick={openInvitation} disabled={opening}>Buka Jemputan <Heart /></button>
+        <button onClick={openInvitation} disabled={opening}>Buka Jemputan <Heart aria-hidden="true" /></button>
       </div>
     </div>}
 
-    <main id="jemputan" inert={!opened || panel !== null}>
+    <main id="jemputan" className={opened ? "is-opened" : undefined} inert={!opened || panel !== null}>
       <section className="invite-page title-page">
-        <div className="page-content">
+        <div className="page-content vellum-card">
           <p className="kicker">Walimatul Urus</p>
           <p className="theme-line">{wedding.couple.theme}</p>
-          <h1>{wedding.couple.bride}<i>&</i>{wedding.couple.groom}</h1>
+          <h1><span>{wedding.couple.bride}</span><i>&</i><span>{wedding.couple.groom}</span></h1>
           <div className="gold-rule" />
-          <time>26 Disember 2026</time>
-          <strong>{wedding.event.venue}</strong>
+          <div className="hero-meta">
+            <time dateTime="2026-12-26">26 Disember 2026</time>
+            <strong>{wedding.event.venue}</strong>
+          </div>
           <p className="quote">“Dengan izin Allah, dua hati disatukan dalam sebuah ikatan.”</p>
-          <button className="share-button" onClick={share}><Share2 /> Kongsi Jemputan</button>
+          <button className="share-button" onClick={share}><Share2 aria-hidden="true" /> Kongsi Jemputan</button>
         </div>
       </section>
 
       <section className="invite-page formal-page">
-        <div className="page-content">
+        <div className="page-content formal-sheet">
           <p className="arabic" lang="ar" dir="rtl">{wedding.invitation.bismillah}</p>
           <p>Assalamualaikum warahmatullahi wabarakatuh</p>
           <p>{wedding.invitation.preface}</p>
@@ -197,8 +203,26 @@ export default function App() {
         </div>
       </section>
 
+      <section className="photo-interlude" aria-label="Erni dan Amirul">
+        <figure>
+          <img
+            src={wedding.images.hero}
+            alt="Erni dan Amirul bersama pada hari pertunangan"
+            width="960"
+            height="1280"
+            loading="lazy"
+            decoding="async"
+          />
+          <figcaption>
+            <small>Erni & Amirul</small>
+            <strong>Menuju hari bahagia</strong>
+            <time dateTime="2026-12-26">26 · 12 · 2026</time>
+          </figcaption>
+        </figure>
+      </section>
+
       <section className="invite-page details-page">
-        <div className="page-content">
+        <div className="page-content event-sheet">
           <h2>Butiran Majlis</h2>
           <dl className="event-facts">
             <div><dt>Tempat</dt><dd>{wedding.event.venue}<small>{wedding.event.address}</small></dd></div>
@@ -221,7 +245,7 @@ export default function App() {
       </section>
 
       <section className="invite-page prayer-page">
-        <div className="page-content">
+        <div className="page-content closing-vellum">
           <p className="prayer">Ya Allah, berkatilah majlis perkahwinan ini. Limpahkanlah barakah dan rahmat kepada kedua mempelai. Kurniakanlah mereka zuriat yang soleh dan solehah, kekalkanlah jodoh mereka di dunia dan di akhirat, serta sempurnakanlah agama mereka dengan berkat ikatan ini.</p>
           <Heart className="prayer-heart" />
           <h2>Terima Kasih</h2>
