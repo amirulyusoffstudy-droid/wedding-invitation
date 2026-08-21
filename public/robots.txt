@@ -1,4 +1,2 @@
 User-agent: *
-Allow: /
-
-Sitemap: https://erni-amirul.vercel.app/sitemap.xml
+Disallow: /

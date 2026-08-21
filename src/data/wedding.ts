@@ -71,7 +71,7 @@ export const wedding = {
     { src: publicAsset("couple-engagement-ring.jpg"), alt: "Erni dan Amirul meraikan pertunangan mereka", position: "center 55%" },
   ],
   wishes: {
-    apiUrl: "https://erni-amirul.vercel.app/api/wishes",
+    apiUrl: import.meta.env.VITE_WISHES_API_URL || "https://erni-amirul.vercel.app/api/wishes",
     message: "Titipkan doa dan ucapan buat kami tanpa meninggalkan jemputan ini.",
   },
   contacts: [

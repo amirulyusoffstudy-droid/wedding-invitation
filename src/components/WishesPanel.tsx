@@ -102,7 +102,11 @@ export function WishesPanel({ apiUrl, message }: WishesPanelProps) {
       message: getFieldError("message", formData.message) || undefined,
     };
     setFieldErrors(errors);
-    if (Object.values(errors).some(Boolean)) return;
+    if (Object.values(errors).some(Boolean)) {
+      const firstInvalidId = errors.name ? nameId : messageId;
+      requestAnimationFrame(() => document.getElementById(firstInvalidId)?.focus());
+      return;
+    }
 
     setSubmitStatus("submitting");
     try {
@@ -131,7 +135,7 @@ export function WishesPanel({ apiUrl, message }: WishesPanelProps) {
     <div className="guestbook-intro">
       <Heart aria-hidden="true" />
       <p>{message}</p>
-      <small>Ucapan anda akan dipaparkan terus selepas dihantar.</small>
+      <small>Nama dan ucapan akan dipaparkan kepada tetamu selepas dihantar. Hubungi pengantin untuk pembetulan atau pemadaman.</small>
     </div>
 
     <form className="wish-form" onSubmit={submitWish} aria-busy={submitStatus === "submitting"} noValidate>

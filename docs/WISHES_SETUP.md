@@ -15,14 +15,28 @@ keeps the Google Apps Script URL out of browser code and validates public input.
 5. Save, select the `setup` function, and click **Run**.
 6. Approve Google's permission prompt. The one-time setup removes the obsolete
    **Approved** column and compacts existing responses directly below the header.
-7. Choose **Deploy > New deployment > Web app**.
-8. Set **Execute as** to **Me** and **Who has access** to **Anyone**.
-9. Deploy and copy the URL ending in `/exec`. Do not use the `/dev` test URL.
+7. Open **Project Settings > Script properties** and add
+   `WISHES_WRITE_SECRET` with a long random value. Do not paste the value into
+   source code or share it publicly.
+8. Choose **Deploy > New deployment > Web app**.
+9. Set **Execute as** to **Me** and **Who has access** to **Anyone**.
+10. Deploy and copy the URL ending in `/exec`. Do not use the `/dev` test URL.
 
 ## Vercel environment variable
 
-Add the `/exec` URL as the production environment variable
-`GOOGLE_WISHES_SCRIPT_URL` on the `erni-amirul` project, then redeploy.
+Add the `/exec` URL as `GOOGLE_WISHES_SCRIPT_URL` and the same random write
+secret as `GOOGLE_WISHES_WRITE_SECRET` on the `erni-amirul` Vercel project.
+Configure both Preview and Production separately, then redeploy.
+
+Set `WISHES_ALLOWED_ORIGINS` to the comma-separated browser origins allowed to
+use the API. The expected production value is:
+
+```text
+https://erni-amirul.vercel.app,https://amirulyusoffstudy-droid.github.io
+```
+
+Do not update the live Apps Script deployment until Vercel already has the
+write-secret environment variable. This ordering prevents submission downtime.
 
 ## Public wishes
 

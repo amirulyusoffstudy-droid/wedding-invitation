@@ -5,6 +5,7 @@
  */
 
 const SPREADSHEET_ID_OR_URL = "PASTE_RESPONSE_SPREADSHEET_ID_OR_URL_HERE";
+const MAX_STORED_WISHES = 5000;
 
 function normalizeHeader_(value) {
   return String(value || "").trim().toLowerCase();
@@ -24,7 +25,9 @@ function getResponseSheet_() {
     throw new Error("Tetapkan SPREADSHEET_ID_OR_URL untuk Google Sheet respons.");
   }
   const sheet = spreadsheet.getSheets().find((candidate) => {
-    const headers = candidate.getRange(1, 1, 1, candidate.getLastColumn()).getDisplayValues()[0]
+    const lastColumn = candidate.getLastColumn();
+    if (lastColumn === 0) return false;
+    const headers = candidate.getRange(1, 1, 1, lastColumn).getDisplayValues()[0]
       .map(normalizeHeader_);
     return headers.includes("nama") && headers.includes("ucapan");
   });
@@ -72,6 +75,22 @@ function cleanMessage_(value) {
   return String(value || "").replace(/[\u0000-\u0009\u000B\u000C\u000E-\u001F\u007F]/g, "").trim().slice(0, 500);
 }
 
+function neutralizeFormula_(value) {
+  const text = String(value || "");
+  return /^[=+\-@]/.test(text) ? `'${text}` : text;
+}
+
+function secretsMatch_(provided) {
+  const expected = PropertiesService.getScriptProperties().getProperty("WISHES_WRITE_SECRET") || "";
+  const candidate = String(provided || "");
+  if (!expected || candidate.length !== expected.length) return false;
+  let mismatch = 0;
+  for (let index = 0; index < expected.length; index += 1) {
+    mismatch |= expected.charCodeAt(index) ^ candidate.charCodeAt(index);
+  }
+  return mismatch === 0;
+}
+
 function json_(body) {
   return ContentService.createTextOutput(JSON.stringify(body)).setMimeType(ContentService.MimeType.JSON);
 }
@@ -85,7 +104,8 @@ function setup() {
   const dataRowCount = Math.max(sheet.getMaxRows() - 1, 1);
   const dataRange = sheet.getRange(2, 1, dataRowCount, sheet.getLastColumn());
   const responseRows = dataRange.getValues()
-    .filter((row) => isResponseRow_(row, nameIndex, messageIndex));
+    .filter((row) => isResponseRow_(row, nameIndex, messageIndex))
+    .map((row) => row.map((value) => typeof value === "string" ? neutralizeFormula_(value) : value));
 
   dataRange.clearContent();
   if (responseRows.length) {
@@ -116,13 +136,15 @@ function doGet() {
 
     return json_({ success: true, data: wishes });
   } catch (error) {
-    return json_({ success: false, error: String(error.message || error) });
+    console.error(error);
+    return json_({ success: false, error: "Ucapan belum dapat dimuatkan." });
   }
 }
 
 function doPost(event) {
   try {
     const payload = JSON.parse(event.postData.contents || "{}");
+    if (!secretsMatch_(payload.writeSecret)) throw new Error("Unauthorized guestbook write");
     const name = cleanSingleLine_(payload.name, 80);
     const message = cleanMessage_(payload.message);
     const relationship = cleanSingleLine_(payload.relationship, 80);
@@ -136,10 +158,11 @@ function doPost(event) {
       const row = new Array(headers.length).fill("");
       const relationshipIndex = findHeader_(headers, "Hubungan dengan pengantin");
       row[0] = new Date();
-      row[nameIndex] = name;
-      row[messageIndex] = message;
-      if (relationshipIndex !== -1) row[relationshipIndex] = relationship;
+      row[nameIndex] = neutralizeFormula_(name);
+      row[messageIndex] = neutralizeFormula_(message);
+      if (relationshipIndex !== -1) row[relationshipIndex] = neutralizeFormula_(relationship);
       const rowNumber = getNextResponseRow_(sheet, nameIndex, messageIndex);
+      if (rowNumber > MAX_STORED_WISHES + 1) throw new Error("Guestbook storage limit reached");
       if (rowNumber > sheet.getMaxRows()) sheet.insertRowAfter(sheet.getMaxRows());
       sheet.getRange(rowNumber, 1, 1, row.length).setValues([row]);
       return json_({
@@ -156,6 +179,7 @@ function doPost(event) {
       lock.releaseLock();
     }
   } catch (error) {
-    return json_({ success: false, error: String(error.message || error) });
+    console.error(error);
+    return json_({ success: false, error: "Ucapan tidak dapat dihantar." });
   }
 }
