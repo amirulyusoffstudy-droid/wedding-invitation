@@ -77,7 +77,12 @@ function cleanMessage_(value) {
 
 function neutralizeFormula_(value) {
   const text = String(value || "");
-  return /^[=+\-@]/.test(text) ? `'${text}` : text;
+  return /^[=+\-@]/.test(text) ? `\u200B${text}` : text;
+}
+
+function restoreLiteralText_(value) {
+  const text = String(value || "");
+  return text.startsWith("\u200B") ? text.slice(1) : text;
 }
 
 function secretsMatch_(provided) {
@@ -127,9 +132,9 @@ function doGet() {
       .reverse()
       .map(({ row, rowNumber }) => ({
         id: `wish-${rowNumber}`,
-        name: cleanSingleLine_(row[nameIndex], 80),
-        message: cleanMessage_(row[messageIndex]),
-        relationship: relationshipIndex === -1 ? "" : cleanSingleLine_(row[relationshipIndex], 80),
+        name: cleanSingleLine_(restoreLiteralText_(row[nameIndex]), 80),
+        message: cleanMessage_(restoreLiteralText_(row[messageIndex])),
+        relationship: relationshipIndex === -1 ? "" : cleanSingleLine_(restoreLiteralText_(row[relationshipIndex]), 80),
         createdAt: row[0] instanceof Date ? row[0].toISOString() : String(row[0] || ""),
       }))
       .filter((wish) => wish.name && wish.message);
