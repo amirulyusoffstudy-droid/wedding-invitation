@@ -1,7 +1,7 @@
 import { useCallback, useEffect, useRef, useState } from "react";
 import {
   CalendarDays, Clipboard, Gift, Heart, MapPin, MessageCircle,
-  Navigation, Phone, Share2, X,
+  Navigation, Phone, Share2, Volume2, VolumeX, X,
 } from "lucide-react";
 import { wedding } from "./data/wedding";
 import { WishesPanel } from "./components/WishesPanel";
@@ -101,6 +101,8 @@ export default function App() {
   const [panel, setPanel] = useState<PanelName | null>(null);
   const [toast, setToast] = useState("");
   const [guest] = useState(() => getGuestName(window.location.search));
+  const [musicPlaying, setMusicPlaying] = useState(false);
+  const audioRef = useRef<HTMLAudioElement>(null);
   const openingTimerRef = useRef<number | undefined>(undefined);
   const toastTimerRef = useRef<number | undefined>(undefined);
 
@@ -115,8 +117,25 @@ export default function App() {
     window.clearTimeout(toastTimerRef.current);
   }, []);
 
+  const playMusic = useCallback(async () => {
+    const audio = audioRef.current;
+    if (!wedding.music.enabled || !audio) return;
+    audio.volume = wedding.music.volume;
+    try {
+      await audio.play();
+      setMusicPlaying(true);
+    } catch {
+      setMusicPlaying(false);
+    }
+  }, []);
+
+  useEffect(() => {
+    if (opened) void playMusic();
+  }, [opened, playMusic]);
+
   const openInvitation = () => {
     if (opening) return;
+    void playMusic();
     setOpening(true);
     const openDelay = window.matchMedia("(prefers-reduced-motion: reduce)").matches ? 0 : 420;
     openingTimerRef.current = window.setTimeout(() => {
@@ -131,6 +150,16 @@ export default function App() {
   };
 
   const closePanel = useCallback(() => setPanel(null), []);
+
+  const toggleMusic = () => {
+    const audio = audioRef.current;
+    if (!audio) return;
+    if (audio.paused) void playMusic();
+    else {
+      audio.pause();
+      setMusicPlaying(false);
+    }
+  };
 
   const copyAccountNumber = async (accountNumber: string) => {
     try {
@@ -159,6 +188,16 @@ export default function App() {
   };
 
   return <div className="invitation-app">
+    {wedding.music.enabled ? <audio
+      ref={audioRef}
+      src={wedding.music.src}
+      loop={wedding.music.loop}
+      preload="metadata"
+      onPlay={() => setMusicPlaying(true)}
+      onPause={() => setMusicPlaying(false)}
+      onEnded={() => setMusicPlaying(false)}
+    /> : null}
+
     {!opened && <div className={`opening-cover ${opening ? "is-opening" : ""}`}>
       <div className="opening-card">
         <div className="opening-monogram" aria-hidden="true"><span>E</span><i>&</i><span>A</span></div>
@@ -203,24 +242,6 @@ export default function App() {
         </div>
       </section>
 
-      <section className="photo-interlude" aria-label="Erni dan Amirul">
-        <figure>
-          <img
-            src={wedding.images.hero}
-            alt="Erni dan Amirul bersama pada hari pertunangan"
-            width="960"
-            height="1280"
-            loading="lazy"
-            decoding="async"
-          />
-          <figcaption>
-            <small>Erni & Amirul</small>
-            <strong>Menuju hari bahagia</strong>
-            <time dateTime="2026-12-26">26 · 12 · 2026</time>
-          </figcaption>
-        </figure>
-      </section>
-
       <section className="invite-page details-page">
         <div className="page-content event-sheet">
           <h2>Butiran Majlis</h2>
@@ -257,19 +278,42 @@ export default function App() {
     </main>
 
     {opened && <nav className="bottom-menu" aria-label="Menu utama" inert={panel !== null}>
-      <button onClick={() => setPanel("contact")}><Phone /><span>Hubungi</span></button>
-      <button onClick={() => setPanel("location")}><MapPin /><span>Lokasi</span></button>
-      <button onClick={() => setPanel("gift")}><Gift /><span>Hadiah</span></button>
-      <button onClick={() => setPanel("wishes")}><MessageCircle /><span>Ucapan</span></button>
+      <button onClick={() => setPanel("contact")}><Phone aria-hidden="true" /><span>Hubungi</span></button>
+      <button onClick={() => setPanel("location")}><MapPin aria-hidden="true" /><span>Lokasi</span></button>
+      <button onClick={() => setPanel("gift")}><Gift aria-hidden="true" /><span>Hadiah</span></button>
+      <button onClick={() => setPanel("wishes")}><MessageCircle aria-hidden="true" /><span>Ucapan</span></button>
     </nav>}
+
+    {opened && wedding.music.enabled ? <button
+      className={`music-toggle ${musicPlaying ? "is-playing" : ""}`}
+      type="button"
+      onClick={toggleMusic}
+      aria-label={musicPlaying ? "Jeda muzik latar" : "Mainkan muzik latar"}
+      aria-pressed={musicPlaying}
+      title={musicPlaying ? "Jeda muzik" : "Mainkan muzik"}
+    >
+      {musicPlaying ? <Volume2 aria-hidden="true" /> : <VolumeX aria-hidden="true" />}
+    </button> : null}
 
     {panel === "contact" && <Panel title="Hubungi" close={closePanel}>
       <div className="contact-list">{wedding.contacts.map((contact) => {
         const number = contact.phone.replace(/\D/g, "");
         return <article key={contact.name}>
-          <div><strong>{contact.name}</strong><span>{contact.role}</span></div>
-          <div><ActionLink href={`tel:+${number}`} icon={<Phone />}>Panggil</ActionLink>
-            <ActionLink href={`https://wa.me/${number}`} icon={<MessageCircle />}>WhatsApp</ActionLink></div>
+          <div className="contact-identity"><strong>{contact.name}</strong><span>{contact.role}</span></div>
+          <div className="contact-actions">
+            <a href={`tel:+${number}`} aria-label={`Panggil ${contact.name}`} title={`Panggil ${contact.name}`}>
+              <Phone aria-hidden="true" />
+            </a>
+            <a
+              href={`https://wa.me/${number}`}
+              target="_blank"
+              rel="noreferrer"
+              aria-label={`WhatsApp ${contact.name}`}
+              title={`WhatsApp ${contact.name}`}
+            >
+              <MessageCircle aria-hidden="true" />
+            </a>
+          </div>
         </article>;
       })}</div>
     </Panel>}
