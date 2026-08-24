@@ -110,8 +110,8 @@ export const wedding = {
     ],
   },
   music: {
-    enabled: false,
-    src: "",
+    enabled: true,
+    src: `${import.meta.env.BASE_URL}sound/Blue%20-%20Yung%20Kai%20(Wedding%20Entrance%20Ver.).mp3`,
     loop: true,
     volume: 0.2,
   },
@@ -126,7 +126,7 @@ export const wedding = {
   features: {
     gallery: false,
     gifts: true,
-    music: false,
+    music: true,
   },
   closing: {
     line: "Satu kisah, dua kehidupan dan sebuah lembaran baharu bermula pada 26 Disember 2026.",
