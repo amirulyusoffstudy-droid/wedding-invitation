@@ -1,0 +1,655 @@
+﻿/* Design C content pass: match the 3-page reference flow and fill the frame. */
+.formal-sheet,
+.event-sheet,
+.closing-vellum {
+  width: min(100%, 560px);
+  max-width: 560px;
+  padding-left: clamp(46px, 8vw, 74px);
+  padding-right: clamp(46px, 8vw, 74px);
+}
+
+.formal-sheet {
+  padding-top: clamp(48px, 8vh, 78px);
+}
+
+.event-sheet,
+.closing-vellum {
+  padding-top: clamp(42px, 7vh, 70px);
+}
+
+.formal-sheet .arabic,
+.closing-vellum .arabic {
+  margin: 0 0 12px;
+  color: var(--ink);
+  font-size: clamp(1.45rem, 5.8vw, 1.9rem);
+  line-height: 1.1;
+}
+
+.compact-copy,
+.formal-sheet .blessing {
+  max-width: 100%;
+  margin: 9px auto;
+  color: var(--ink);
+  font-size: clamp(0.78rem, 2.7vw, 0.95rem);
+  font-weight: 500;
+  line-height: 1.28;
+}
+
+.parent-names {
+  margin: 18px auto;
+}
+
+.parent-names strong {
+  display: block;
+  color: var(--gold-text);
+  font-family: var(--display);
+  font-size: clamp(1rem, 3.6vw, 1.32rem);
+  line-height: 1.08;
+}
+
+.formal-couple {
+  display: grid;
+  gap: 2px;
+  margin: 18px auto 16px;
+  color: var(--gold-text);
+  font-family: var(--script);
+  font-size: clamp(1.9rem, 7.5vw, 3.2rem);
+  line-height: 0.9;
+}
+
+.formal-couple span {
+  display: block;
+}
+
+.formal-couple i {
+  color: var(--gold-text);
+  font-family: var(--script);
+  font-size: 0.74em;
+  line-height: 0.8;
+}
+
+.event-sheet h2,
+.closing-vellum h2 {
+  margin: 0 0 16px;
+  color: var(--gold-text);
+  font-family: var(--script);
+  font-size: clamp(2.2rem, 8vw, 3.2rem);
+  font-weight: 400;
+  line-height: 0.98;
+}
+
+.detail-stack {
+  display: grid;
+  gap: 12px;
+}
+
+.detail-stack section {
+  display: grid;
+  gap: 3px;
+}
+
+.detail-stack h3,
+.programme-card h3 {
+  margin: 0;
+  color: var(--gold-text);
+  font-family: var(--script);
+  font-size: clamp(1.28rem, 4.8vw, 1.7rem);
+  font-weight: 400;
+  letter-spacing: 0.18em;
+  line-height: 1;
+  text-transform: none;
+}
+
+.detail-stack p,
+.mini-contact-list p {
+  display: grid;
+  gap: 2px;
+  margin: 0;
+  color: var(--ink);
+  font-size: clamp(0.82rem, 2.8vw, 0.98rem);
+  line-height: 1.22;
+}
+
+.detail-stack p strong {
+  color: var(--ink);
+  font-family: "Segoe UI", system-ui, sans-serif;
+  font-size: 1em;
+  letter-spacing: 0.05em;
+  text-transform: uppercase;
+}
+
+.detail-stack p span,
+.mini-contact-list span {
+  color: var(--muted);
+  font-size: 0.86em;
+}
+
+.mini-contact-list {
+  display: grid;
+  gap: 3px;
+}
+
+.mini-contact-list p {
+  grid-template-columns: auto 1fr;
+  align-items: baseline;
+  column-gap: 8px;
+  justify-content: center;
+}
+
+.mini-contact-list strong {
+  color: var(--ink);
+  text-transform: uppercase;
+}
+
+.programme-card {
+  display: grid;
+  gap: 7px;
+  margin-top: 14px;
+  padding: 0;
+  border: 0;
+  background: transparent;
+  box-shadow: none;
+}
+
+.programme-card div {
+  display: grid;
+  grid-template-columns: minmax(0, 1fr) auto;
+  gap: 8px;
+  align-items: baseline;
+  margin: 0;
+  color: var(--ink);
+  font-size: clamp(0.8rem, 2.7vw, 0.95rem);
+  line-height: 1.15;
+}
+
+.programme-card time {
+  color: var(--muted);
+  font-family: "Segoe UI", system-ui, sans-serif;
+}
+
+.calendar-button {
+  min-height: 40px;
+  margin-top: 16px;
+  padding: 8px 16px;
+  font-size: 0.82rem;
+}
+
+.closing-vellum .prayer {
+  margin: 12px auto;
+  color: var(--ink);
+  font-family: Georgia, "Times New Roman", serif;
+  font-size: clamp(0.86rem, 2.9vw, 1rem);
+  font-style: normal;
+  line-height: 1.55;
+}
+
+.prayer-heart {
+  margin: 14px;
+}
+
+.prayer-page .closing-names {
+  display: block;
+  margin: 12px 0 6px;
+  color: var(--gold-text);
+  font-family: var(--script);
+  font-size: clamp(2rem, 8vw, 3rem);
+  line-height: 0.9;
+}
+
+@media (max-width: 430px) {
+  .formal-sheet,
+  .event-sheet,
+  .closing-vellum {
+    padding-left: 40px;
+    padding-right: 40px;
+  }
+
+  .formal-couple {
+    font-size: clamp(1.72rem, 7.3vw, 2.65rem);
+  }
+
+  .compact-copy,
+  .formal-sheet .blessing {
+    font-size: clamp(0.74rem, 2.65vw, 0.88rem);
+  }
+
+  .detail-stack {
+    gap: 10px;
+  }
+}
+
+@media (max-width: 360px) {
+  .formal-sheet,
+  .event-sheet,
+  .closing-vellum {
+    padding-left: 32px;
+    padding-right: 32px;
+  }
+
+  .formal-couple {
+    font-size: clamp(1.55rem, 7vw, 2.15rem);
+  }
+
+  .programme-card div {
+    grid-template-columns: 1fr;
+    gap: 1px;
+  }
+}
+
+/* Design C tidy pass: reduce visual noise and center the compact lists. */
+.formal-sheet,
+.event-sheet,
+.closing-vellum {
+  padding-left: clamp(48px, 8.5vw, 78px);
+  padding-right: clamp(48px, 8.5vw, 78px);
+}
+
+.formal-sheet .arabic,
+.closing-vellum .arabic {
+  font-size: clamp(1.25rem, 5vw, 1.62rem);
+}
+
+.compact-copy,
+.formal-sheet .blessing {
+  margin-block: 7px;
+  font-size: clamp(0.68rem, 2.35vw, 0.82rem);
+  line-height: 1.24;
+}
+
+.parent-names {
+  margin: 14px auto;
+}
+
+.parent-names strong {
+  font-size: clamp(0.82rem, 3vw, 1.08rem);
+  letter-spacing: 0.04em;
+}
+
+.formal-couple {
+  margin: 14px auto 12px;
+  font-size: clamp(1.48rem, 6.15vw, 2.42rem);
+  line-height: 0.92;
+}
+
+.event-sheet h2,
+.closing-vellum h2 {
+  margin-bottom: 13px;
+  font-size: clamp(1.9rem, 7vw, 2.72rem);
+}
+
+.detail-stack {
+  gap: 10px;
+}
+
+.detail-stack h3,
+.programme-card h3 {
+  font-size: clamp(1.05rem, 4.05vw, 1.42rem);
+  letter-spacing: 0.2em;
+}
+
+.detail-stack p,
+.mini-contact-list p {
+  font-size: clamp(0.72rem, 2.42vw, 0.84rem);
+  line-height: 1.18;
+}
+
+.detail-stack p strong {
+  letter-spacing: 0.06em;
+}
+
+.mini-contact-list {
+  width: min(100%, 240px);
+  margin-inline: auto;
+  justify-items: stretch;
+}
+
+.mini-contact-list p {
+  grid-template-columns: minmax(0, 0.8fr) minmax(0, 1fr);
+  column-gap: 14px;
+  text-align: left;
+}
+
+.mini-contact-list strong {
+  text-align: right;
+}
+
+.mini-contact-list span {
+  text-align: left;
+}
+
+.programme-card {
+  width: min(100%, 310px);
+  margin-inline: auto;
+  gap: 6px;
+}
+
+.programme-card h3 {
+  text-align: center;
+}
+
+.programme-card div {
+  grid-template-columns: minmax(0, 1fr) minmax(0, 0.9fr);
+  gap: 16px;
+  font-size: clamp(0.7rem, 2.35vw, 0.84rem);
+  line-height: 1.12;
+}
+
+.programme-card div strong {
+  text-align: right;
+}
+
+.programme-card time {
+  text-align: left;
+}
+
+.calendar-button {
+  min-height: 38px;
+  margin-top: 14px;
+  padding: 7px 15px;
+  font-size: 0.76rem;
+}
+
+.closing-vellum .prayer {
+  max-width: 96%;
+  margin-block: 10px;
+  font-size: clamp(0.76rem, 2.55vw, 0.9rem);
+  line-height: 1.42;
+}
+
+.prayer-page .closing-names {
+  font-size: clamp(1.7rem, 6.8vw, 2.45rem);
+}
+
+.bottom-menu button {
+  font-size: 0.75rem;
+}
+
+/* Design C hierarchy pass: only names and section titles should feel highlighted. */
+.compact-copy,
+.formal-sheet .blessing,
+.detail-stack p,
+.mini-contact-list p,
+.programme-card div,
+.closing-vellum .prayer {
+  color: rgba(123, 53, 75, 0.8);
+  font-weight: 400;
+}
+
+.compact-copy,
+.formal-sheet .blessing {
+  font-size: clamp(0.62rem, 2.08vw, 0.76rem);
+  line-height: 1.22;
+}
+
+.formal-sheet .arabic,
+.closing-vellum .arabic {
+  color: rgba(123, 53, 75, 0.78);
+  font-size: clamp(1.12rem, 4.5vw, 1.42rem);
+}
+
+.parent-names strong {
+  color: var(--gold-text);
+  font-size: clamp(0.76rem, 2.7vw, 0.96rem);
+  font-weight: 700;
+}
+
+.formal-couple {
+  margin-block: 18px 15px;
+  color: var(--gold-text);
+  font-size: clamp(1.82rem, 7.35vw, 2.9rem);
+  line-height: 0.86;
+  text-shadow: 0 1px 0 rgba(255, 255, 255, 0.72);
+}
+
+.formal-couple span {
+  color: var(--gold-text);
+}
+
+.event-sheet h2,
+.closing-vellum h2 {
+  color: var(--gold-text);
+  font-size: clamp(1.82rem, 6.7vw, 2.55rem);
+}
+
+.detail-stack h3,
+.programme-card h3 {
+  color: var(--gold-text);
+  font-size: clamp(0.98rem, 3.7vw, 1.28rem);
+}
+
+.detail-stack p,
+.mini-contact-list p,
+.programme-card div {
+  font-size: clamp(0.64rem, 2.12vw, 0.78rem);
+}
+
+.detail-stack p strong,
+.mini-contact-list strong,
+.programme-card div strong {
+  color: var(--ink);
+  font-weight: 650;
+}
+
+.closing-vellum .prayer {
+  font-size: clamp(0.7rem, 2.35vw, 0.84rem);
+}
+
+.prayer-page .closing-names {
+  color: var(--gold-text);
+  font-size: clamp(1.85rem, 7.2vw, 2.72rem);
+}
+
+@media (max-width: 430px) {
+  .formal-sheet,
+  .event-sheet,
+  .closing-vellum {
+    padding-left: 48px;
+    padding-right: 48px;
+  }
+
+  .formal-couple {
+    font-size: clamp(1.68rem, 6.9vw, 2.36rem);
+  }
+
+  .programme-card {
+    width: min(100%, 292px);
+  }
+
+}
+
+@media (max-width: 360px) {
+  .formal-sheet,
+  .event-sheet,
+  .closing-vellum {
+    padding-left: 38px;
+    padding-right: 38px;
+  }
+
+  .formal-couple {
+    font-size: clamp(1.42rem, 6.3vw, 1.95rem);
+  }
+
+  .mini-contact-list,
+  .programme-card {
+    width: min(100%, 250px);
+  }
+
+}
+
+/* Design C final hierarchy: parent/couple names stand out, copy stays quiet. */
+.formal-sheet .arabic,
+.closing-vellum .arabic {
+  font-size: clamp(1.02rem, 4vw, 1.28rem);
+}
+
+.compact-copy,
+.formal-sheet .blessing,
+.closing-vellum .prayer {
+  color: rgba(123, 53, 75, 0.72);
+  font-size: clamp(0.58rem, 1.92vw, 0.7rem);
+  font-weight: 400;
+  line-height: 1.2;
+}
+
+.parent-names {
+  display: grid;
+  gap: 4px;
+  margin: 18px auto;
+}
+
+.parent-names strong {
+  color: var(--ink);
+  font-family: var(--display);
+  font-size: clamp(0.95rem, 3.45vw, 1.18rem);
+  font-weight: 800;
+  letter-spacing: 0.08em;
+  line-height: 1.08;
+  text-transform: uppercase;
+}
+
+.parent-names i {
+  color: var(--gold-text);
+  font-family: var(--display);
+  font-size: clamp(0.95rem, 3.4vw, 1.16rem);
+  font-style: normal;
+  font-weight: 800;
+  line-height: 0.8;
+}
+
+.formal-couple {
+  margin-block: 20px 16px;
+  font-size: clamp(1.95rem, 7.85vw, 3.08rem);
+}
+
+.formal-couple span,
+.formal-couple i {
+  color: var(--gold-text);
+}
+
+.closing-vellum h2 {
+  font-size: clamp(1.72rem, 6.2vw, 2.32rem);
+}
+
+.prayer-page .closing-names {
+  font-size: clamp(1.95rem, 7.4vw, 2.78rem);
+}
+
+@media (max-width: 430px) {
+  .parent-names strong {
+    font-size: clamp(0.88rem, 3.35vw, 1.06rem);
+  }
+
+  .formal-couple {
+    font-size: clamp(1.8rem, 7.45vw, 2.44rem);
+  }
+}
+
+@media (max-width: 360px) {
+  .parent-names strong {
+    font-size: clamp(0.78rem, 3.15vw, 0.92rem);
+  }
+
+  .formal-couple {
+    font-size: clamp(1.52rem, 6.85vw, 2rem);
+  }
+}
+
+/* Design C requested scale lock: page 1 and 3 copy follows Page 2 body sizing. */
+.formal-page .formal-sheet .compact-copy,
+.formal-page .formal-sheet .blessing,
+.prayer-page .closing-vellum .prayer {
+  color: rgba(123, 53, 75, 0.68);
+  font-family: "Segoe UI", system-ui, sans-serif;
+  font-size: clamp(0.56rem, 1.86vw, 0.68rem);
+  font-weight: 400;
+  line-height: 1.18;
+}
+
+.formal-page .formal-sheet .arabic,
+.prayer-page .closing-vellum .arabic {
+  font-size: clamp(0.98rem, 3.8vw, 1.2rem);
+}
+
+.formal-page .formal-sheet .parent-names {
+  gap: 2px;
+  margin: 13px auto;
+}
+
+.formal-page .formal-sheet .parent-names strong {
+  color: rgba(123, 53, 75, 0.72);
+  font-size: clamp(0.66rem, 2.35vw, 0.82rem);
+  font-weight: 600;
+  letter-spacing: 0.06em;
+}
+
+.formal-page .formal-sheet .parent-names i {
+  color: rgba(123, 53, 75, 0.72);
+  font-size: clamp(0.66rem, 2.3vw, 0.8rem);
+  font-weight: 600;
+}
+
+.formal-page .formal-sheet .formal-couple {
+  color: var(--gold-text);
+  font-size: clamp(2rem, 8.1vw, 3.15rem);
+  line-height: 0.84;
+}
+
+.prayer-page .closing-vellum h2 {
+  font-size: clamp(1.58rem, 5.8vw, 2.15rem);
+}
+
+.prayer-page .closing-vellum {
+  padding-top: clamp(98px, 15vh, 132px);
+}
+
+.prayer-page .closing-vellum .prayer {
+  max-width: min(100%, 365px);
+  margin: 8px auto 0;
+  line-height: 1.18;
+}
+
+.prayer-page .closing-vellum .prayer + .prayer {
+  margin-top: 12px;
+}
+
+.prayer-page .closing-vellum .prayer-heart {
+  display: block;
+  margin: 30px auto 34px;
+}
+
+.prayer-page .closing-vellum .closing-names {
+  display: block;
+  margin: 0 auto 8px;
+  font-size: clamp(1.88rem, 7vw, 2.62rem);
+}
+
+.prayer-page .closing-vellum > span {
+  display: block;
+}
+
+@media (max-width: 430px) {
+  .formal-page .formal-sheet .compact-copy,
+  .formal-page .formal-sheet .blessing,
+  .prayer-page .closing-vellum .prayer {
+    font-size: clamp(0.54rem, 1.82vw, 0.64rem);
+  }
+
+  .prayer-page .closing-vellum {
+    padding-top: 104px;
+  }
+
+  .prayer-page .closing-vellum .prayer-heart {
+    margin-block: 30px 34px;
+  }
+
+  .formal-page .formal-sheet .formal-couple {
+    font-size: clamp(1.82rem, 7.6vw, 2.5rem);
+  }
+}
+
+@media (max-width: 360px) {
+  .formal-page .formal-sheet .formal-couple {
+    font-size: clamp(1.56rem, 7vw, 2.05rem);
+  }
+}
+

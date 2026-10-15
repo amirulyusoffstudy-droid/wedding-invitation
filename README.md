@@ -2,11 +2,13 @@
 
 A mobile-first Malaysian wedding invitation, personal story, and practical guest guide for 26 December 2026. Built as a static React application suitable for Vercel.
 
+See the simple deployment history in [`docs/RELEASE_NOTES.md`](docs/RELEASE_NOTES.md).
+
 ## Stack
 
 - React 19, TypeScript, Vite
 - Plain responsive CSS and Lucide React icons
-- Google Forms for RSVP (no backend)
+- Vercel Function and Google Sheets for RSVP and wishes
 - Local images under `public/images`
 
 ## Local development
@@ -57,10 +59,10 @@ Keep the originals in that folder; public-facing optimized copies live under
 
 ## RSVP and wishes
 
-Create a public Google Form with attendance, number of guests, dietary needs,
-and an optional message. Paste its public response URL into `rsvp.formUrl`.
-Keep `rsvp.wishesIncluded: true` when wishes are collected in the same form.
-The site intentionally never displays fake submissions.
+The RSVP button opens a combined attendance and wishes form. A single submission
+saves the attendance and guest count privately, and publishes the optional wish
+to the guestbook. See [`docs/WISHES_SETUP.md`](docs/WISHES_SETUP.md) for the
+required Apps Script adapter update before deployment.
 
 ## Personalised guest links
 

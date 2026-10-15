@@ -1,5 +1,25 @@
 # Native guestbook setup
 
+## Combined RSVP and ucapan
+
+The `feature/rsvp-ucapan` branch adds attendance and guest count to the same
+submission as an optional wish. Only names and wishes are returned publicly.
+Attendance and guest counts stay in the response Sheet. Attending guests can
+select 1–5 people including themselves; declining guests are recorded as zero.
+
+Before deploying this branch, update the existing Apps Script web app with
+`docs/google-apps-script-wishes.js`: save the script, then use **Deploy > Manage
+deployments > Edit > New version > Deploy**, keeping the existing `/exec` URL
+and write secret. Do not rerun `setup` for this update; it compacts existing rows.
+The updated script adds **Kehadiran** and **Bilangan Tetamu** columns when the
+first RSVP is received, and saves the attendance and wish in the same row.
+
+The API checks the adapter's RSVP capability before writing. An old adapter
+will return an error rather than report success while discarding attendance.
+For a branch preview, use its same-origin `/api/wishes` endpoint and configure
+the Preview Google Script URL and secret. Plain Vite does not serve API routes;
+use `npm run dev:secure` for isolated mock submissions.
+
 The invitation submits and reads wishes through a Vercel Function. The function
 keeps the Google Apps Script URL out of browser code and validates public input.
 

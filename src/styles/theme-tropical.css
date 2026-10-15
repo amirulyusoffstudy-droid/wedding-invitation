@@ -1,0 +1,365 @@
+﻿/* Tropical paper revamp inspired by the latest reference. */
+:root {
+  --paper: #f7f6f1;
+  --ink: #505043;
+  --olive: #4e5640;
+  --gold: #a89a55;
+  --gold-text: #5a5d49;
+  --pink: #c84f78;
+  --muted: #6f705f;
+  --line: rgba(80, 80, 67, 0.16);
+  --display:
+    "Cormorant Garamond Variable", "Cormorant Garamond", Georgia, serif;
+  --script:
+    "Segoe Script", "Snell Roundhand", "Brush Script MT", "Lucida Handwriting",
+    cursive;
+}
+
+body {
+  background: #efeee8;
+}
+
+.invitation-app {
+  color: var(--ink);
+  background: var(--paper);
+  box-shadow: 0 0 45px rgba(55, 55, 46, 0.16);
+}
+
+.invite-page,
+.title-page,
+.prayer-page {
+  background:
+    linear-gradient(rgba(255, 255, 255, 0.08), rgba(255, 255, 255, 0.08)),
+    var(--paper) url("../assets/tropical-paper.png") center / cover no-repeat;
+}
+
+.vellum-card,
+.closing-vellum {
+  width: min(100%, 520px);
+  max-width: 520px;
+  border: 0;
+  background: transparent;
+  box-shadow: none;
+  backdrop-filter: none;
+  color: var(--ink);
+}
+
+.kicker,
+.guest-name small,
+.prayer-page span,
+.event-facts dt,
+.programme-card h3,
+.hero-meta strong,
+.panel header small {
+  color: var(--pink);
+  font-family: var(--display);
+  font-size: 0.9rem;
+  font-weight: 600;
+  letter-spacing: 0.12em;
+  line-height: 1.15;
+  text-transform: uppercase;
+}
+
+.title-page h1,
+.formal-couple,
+.prayer-page .closing-names {
+  color: var(--pink);
+  font-family: var(--display);
+  font-weight: 400;
+  letter-spacing: -0.055em;
+}
+
+.title-page h1 i,
+.formal-couple i {
+  color: var(--pink);
+  font-family: var(--script);
+  font-size: 0.72em;
+  line-height: 0.9;
+}
+
+.hero-meta time {
+  display: block;
+  color: var(--pink);
+  font: 600 1.55rem / 1.1 var(--display);
+  letter-spacing: 0.04em;
+}
+
+.quote {
+  color: rgba(200, 79, 120, 0.82);
+  font: italic 1rem / 1.35 "Segoe UI", system-ui, sans-serif;
+}
+
+.guest-name {
+  margin: 28px 0 22px;
+}
+
+.guest-name strong {
+  color: var(--ink);
+  font-family: var(--display);
+  font-size: 1.3rem;
+}
+
+.calendar-button,
+.share-button,
+.wish-submit,
+.gift-list button {
+  min-height: 46px;
+  padding: 11px 22px;
+  border: 1px solid rgba(200, 79, 120, 0.38);
+  border-radius: 999px;
+  color: #fff;
+  background: rgba(200, 79, 120, 0.92);
+  box-shadow: 0 12px 28px rgba(132, 52, 76, 0.16);
+}
+
+.invite-page {
+  padding: clamp(42px, 8vh, 76px) 30px 120px;
+  border-bottom: 0;
+}
+
+.page-content {
+  max-width: 520px;
+}
+
+.vellum-card {
+  padding: 0 30px 0 122px;
+}
+
+.title-page .theme-line {
+  max-width: none;
+  margin: 0 auto;
+  color: var(--pink);
+  font: 600 1.15rem / 1.15 var(--display);
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+}
+
+.title-page h1 {
+  display: grid;
+  gap: 0;
+  margin: 38px 0 26px;
+  font-size: clamp(3.4rem, 16vw, 5.8rem);
+  line-height: 0.72;
+}
+
+.gold-rule,
+.gold-rule::after {
+  display: none;
+}
+
+.hero-meta {
+  gap: 8px;
+}
+
+.hero-meta strong {
+  color: var(--muted);
+  font-size: 0.75rem;
+}
+
+.title-page .quote {
+  max-width: 305px;
+  margin: 56px auto 20px;
+}
+
+.share-button,
+.calendar-button,
+.panel-action {
+  color: var(--pink);
+  background: rgba(255, 255, 255, 0.28);
+}
+
+.formal-page,
+.details-page {
+  background:
+    linear-gradient(rgba(255, 255, 255, 0.16), rgba(255, 255, 255, 0.16)),
+    var(--paper) url("../assets/tropical-paper.png") center / cover no-repeat;
+}
+
+.formal-sheet,
+.event-sheet {
+  max-width: 560px;
+  padding: 0 28px 0 112px;
+  border: 0;
+}
+
+.formal-sheet::before,
+.formal-sheet::after {
+  display: none;
+}
+
+.arabic {
+  color: var(--ink);
+  font: 500 2.1rem / 1.2 var(--display);
+}
+
+.formal-page .page-content > p,
+.blessing,
+.prayer,
+.prayer-page .page-content > p {
+  color: var(--ink);
+  font-size: 1.02rem;
+  line-height: 1.34;
+}
+
+.parent-names {
+  gap: 2px;
+  margin: 26px auto;
+  color: var(--ink);
+  font-size: clamp(1.32rem, 5.1vw, 1.85rem);
+  font-weight: 700;
+  line-height: 1.08;
+  text-transform: uppercase;
+}
+
+.formal-couple {
+  gap: 0;
+  margin: 28px auto;
+  font-size: clamp(2.3rem, 10vw, 4rem);
+  line-height: 0.82;
+}
+
+.invite-page h2,
+.event-sheet h2,
+.panel h2,
+.location-panel h3,
+.gift-list h3,
+.wish-form h3,
+.wish-wall h3 {
+  color: var(--ink);
+  font-family: var(--display);
+  font-weight: 700;
+}
+
+.event-facts {
+  margin: 26px 0 20px;
+}
+
+.event-facts div {
+  padding: 10px 0;
+  border-color: rgba(80, 80, 67, 0.12);
+}
+
+.event-facts dd {
+  color: var(--ink);
+  font-size: 1.12rem;
+  font-weight: 600;
+  line-height: 1.22;
+}
+
+.event-facts small {
+  margin-top: 5px;
+  color: var(--muted);
+  font-size: 0.78rem;
+  line-height: 1.35;
+}
+
+.programme-card {
+  margin-top: 30px;
+  padding: 0;
+  border: 0;
+  background: transparent;
+  box-shadow: none;
+}
+
+.programme-card div {
+  margin: 12px 0;
+}
+
+.programme-card time {
+  color: var(--muted);
+}
+
+.closing-vellum {
+  padding: 0 34px 0 116px;
+}
+
+.prayer {
+  font-style: italic;
+}
+
+.prayer-heart {
+  color: var(--pink);
+}
+
+.prayer-page .closing-names {
+  font-size: clamp(2.4rem, 11vw, 4.2rem);
+  line-height: 0.88;
+}
+
+.bottom-menu {
+  background: rgba(255, 255, 255, 0.72);
+  border-top: 1px solid rgba(200, 79, 120, 0.18);
+}
+
+.bottom-menu button {
+  color: var(--ink);
+}
+
+.bottom-menu svg {
+  color: var(--pink);
+}
+
+.music-toggle,
+.panel {
+  border-color: rgba(200, 79, 120, 0.18);
+  background: rgba(255, 255, 255, 0.88);
+}
+
+.panel > header {
+  background: rgba(255, 255, 255, 0.82);
+  border-bottom-color: rgba(200, 79, 120, 0.14);
+}
+
+.contact-list article,
+.gift-list article,
+.wish-form,
+.wish-card,
+.wish-state {
+  border-color: rgba(200, 79, 120, 0.14);
+  background-color: rgba(255, 255, 255, 0.48);
+}
+
+@media (max-width: 430px) {
+  .invite-page,
+  .title-page,
+  .formal-page,
+  .details-page,
+  .prayer-page {
+    background-position: 44% center;
+  }
+
+  .vellum-card,
+  .formal-sheet,
+  .event-sheet,
+  .closing-vellum {
+    padding-left: 108px;
+    padding-right: 22px;
+  }
+
+  .title-page h1 {
+    font-size: clamp(3.15rem, 16vw, 4.75rem);
+  }
+
+  .formal-couple {
+    font-size: clamp(2.05rem, 10vw, 3.3rem);
+  }
+}
+
+@media (max-width: 360px) {
+  .vellum-card,
+  .formal-sheet,
+  .event-sheet,
+  .closing-vellum {
+    padding-left: 92px;
+    padding-right: 18px;
+  }
+
+  .kicker,
+  .guest-name small,
+  .event-facts dt,
+  .programme-card h3,
+  .hero-meta strong {
+    font-size: 0.78rem;
+  }
+}
+

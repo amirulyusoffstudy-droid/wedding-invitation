@@ -1,0 +1,205 @@
+﻿/* Design C: pink stripe scallop-frame variant. */
+:root {
+  --paper: #fff7fb;
+  --ink: #7b354b;
+  --olive: #8c8b49;
+  --gold: #9c9955;
+  --gold-text: #92904e;
+  --pink: #f23f9a;
+  --muted: #84455b;
+  --line: rgba(242, 63, 154, 0.22);
+}
+
+body {
+  background: #ffe6f3;
+}
+
+.invitation-app {
+  background: #fff6fb;
+}
+
+.invite-page,
+.title-page,
+.formal-page,
+.details-page,
+.prayer-page {
+  background:
+    linear-gradient(rgba(255, 255, 255, 0.03), rgba(255, 255, 255, 0.03)),
+    #fff7fb url("../assets/design-c-paper.png") center / cover no-repeat;
+}
+
+.vellum-card,
+.formal-sheet,
+.event-sheet,
+.closing-vellum {
+  max-width: 520px;
+  padding-left: clamp(62px, 10vw, 92px);
+  padding-right: clamp(62px, 10vw, 92px);
+}
+
+.vellum-card {
+  padding-top: clamp(74px, 11vh, 112px);
+}
+
+.formal-sheet,
+.event-sheet,
+.closing-vellum {
+  padding-top: clamp(56px, 9vh, 96px);
+}
+
+.kicker,
+.title-page .theme-line {
+  color: var(--gold-text);
+  font-size: clamp(1.08rem, 4.1vw, 1.45rem);
+  letter-spacing: 0.08em;
+}
+
+.title-page .theme-line {
+  font-weight: 700;
+}
+
+.title-page h1,
+.formal-couple,
+.prayer-page .closing-names {
+  color: var(--gold-text);
+  text-shadow: 0 1px 0 rgba(255, 255, 255, 0.65);
+}
+
+.title-page h1 {
+  margin-block: 30px 24px;
+  font-size: clamp(3.6rem, 15vw, 5.4rem);
+}
+
+.hero-meta time {
+  color: var(--gold-text);
+}
+
+.quote {
+  color: rgba(123, 53, 75, 0.82);
+}
+
+.guest-name strong {
+  color: var(--ink);
+}
+
+.calendar-button,
+.share-button,
+.wish-submit,
+.gift-list button {
+  border-color: rgba(242, 63, 154, 0.36);
+  background: rgba(242, 63, 154, 0.92);
+}
+
+.share-button,
+.calendar-button,
+.panel-action {
+  color: var(--ink);
+  background: rgba(255, 255, 255, 0.54);
+}
+
+.invite-page {
+  padding: clamp(28px, 6vh, 58px) 22px 118px;
+}
+
+.arabic {
+  color: var(--ink);
+  font-size: clamp(1.7rem, 7vw, 2.2rem);
+}
+
+.formal-page .page-content > p,
+.blessing,
+.prayer,
+.prayer-page .page-content > p {
+  color: var(--ink);
+  line-height: 1.28;
+}
+
+.parent-names,
+.invite-page h2,
+.event-sheet h2,
+.event-facts dt,
+.programme-card h3 {
+  color: var(--gold-text);
+}
+
+.formal-couple {
+  color: var(--gold-text);
+  font-size: clamp(2.15rem, 9vw, 3.65rem);
+}
+
+.event-facts div {
+  border-color: rgba(242, 63, 154, 0.14);
+}
+
+.event-facts dd,
+.programme-card time {
+  color: var(--ink);
+}
+
+.bottom-menu {
+  background: rgba(255, 239, 247, 0.84);
+  border-top-color: rgba(242, 63, 154, 0.2);
+}
+
+.bottom-menu svg,
+.music-toggle.is-playing {
+  color: var(--pink);
+}
+
+.music-toggle.is-playing {
+  background: #fff;
+}
+
+.panel {
+  background: rgba(255, 247, 251, 0.94);
+}
+
+.panel > header {
+  background: rgba(255, 247, 251, 0.9);
+}
+
+.panel h2,
+.location-panel h3,
+.gift-list h3,
+.wish-form h3,
+.wish-wall h3 {
+  color: var(--gold-text);
+}
+
+@media (max-width: 430px) {
+  .invite-page,
+  .title-page,
+  .formal-page,
+  .details-page,
+  .prayer-page {
+    background-position: center;
+  }
+
+  .vellum-card,
+  .formal-sheet,
+  .event-sheet,
+  .closing-vellum {
+    padding-left: 56px;
+    padding-right: 56px;
+  }
+
+  .title-page h1 {
+    font-size: clamp(3rem, 14.5vw, 4.4rem);
+  }
+}
+
+@media (max-width: 360px) {
+  .vellum-card,
+  .formal-sheet,
+  .event-sheet,
+  .closing-vellum {
+    padding-left: 44px;
+    padding-right: 44px;
+  }
+
+  .kicker,
+  .title-page .theme-line {
+    font-size: 1rem;
+  }
+}
+

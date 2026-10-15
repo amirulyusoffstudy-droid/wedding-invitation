@@ -122,12 +122,13 @@ function doGet() {
   try {
     const sheet = getResponseSheet_();
     const values = sheet.getDataRange().getValues();
-    if (values.length < 2) return json_({ success: true, data: [] });
+    if (values.length < 2) return json_({ success: true, data: [], capabilities: { rsvp: true } });
 
     const { headers, nameIndex, messageIndex } = getResponseIndexes_(sheet);
     const relationshipIndex = findHeader_(headers, "Hubungan dengan pengantin");
 
     const wishes = values.slice(1).map((row, index) => ({ row, rowNumber: index + 2 }))
+      .filter(({ row }) => cleanSingleLine_(row[nameIndex], 80) && cleanMessage_(row[messageIndex]))
       .slice(-50)
       .reverse()
       .map(({ row, rowNumber }) => ({
@@ -139,7 +140,7 @@ function doGet() {
       }))
       .filter((wish) => wish.name && wish.message);
 
-    return json_({ success: true, data: wishes });
+    return json_({ success: true, data: wishes, capabilities: { rsvp: true } });
   } catch (error) {
     console.error(error);
     return json_({ success: false, error: "Ucapan belum dapat dimuatkan." });
@@ -153,12 +154,29 @@ function doPost(event) {
     const name = cleanSingleLine_(payload.name, 80);
     const message = cleanMessage_(payload.message);
     const relationship = cleanSingleLine_(payload.relationship, 80);
-    if (!name || !message) throw new Error("Nama dan ucapan diperlukan.");
+    const hasRsvp = payload.attendance !== undefined || payload.guestCount !== undefined;
+    if (hasRsvp) {
+      const validAttendance = payload.attendance === "attending"
+        && Number.isInteger(payload.guestCount) && payload.guestCount >= 1 && payload.guestCount <= 5;
+      const validDecline = payload.attendance === "not-attending" && payload.guestCount === 0;
+      if (!validAttendance && !validDecline) throw new Error("RSVP tidak sah.");
+    }
+    if (!name || (!hasRsvp && !message)) throw new Error("Nama dan ucapan diperlukan.");
 
     const lock = LockService.getScriptLock();
     lock.waitLock(10000);
     try {
       const sheet = getResponseSheet_();
+      if (hasRsvp) {
+        ["Kehadiran", "Bilangan Tetamu"].forEach((header) => {
+          if (findHeader_(getHeaders_(sheet), header) === -1) {
+            if (sheet.getLastColumn() === sheet.getMaxColumns()) {
+              sheet.insertColumnAfter(sheet.getMaxColumns());
+            }
+            sheet.getRange(1, sheet.getLastColumn() + 1).setValue(header);
+          }
+        });
+      }
       const { headers, nameIndex, messageIndex } = getResponseIndexes_(sheet);
       const row = new Array(headers.length).fill("");
       const relationshipIndex = findHeader_(headers, "Hubungan dengan pengantin");
@@ -166,12 +184,17 @@ function doPost(event) {
       row[nameIndex] = neutralizeFormula_(name);
       row[messageIndex] = neutralizeFormula_(message);
       if (relationshipIndex !== -1) row[relationshipIndex] = neutralizeFormula_(relationship);
+      if (hasRsvp) {
+        row[findHeader_(headers, "Kehadiran")] = payload.attendance === "attending" ? "Hadir" : "Tidak hadir";
+        row[findHeader_(headers, "Bilangan Tetamu")] = payload.guestCount;
+      }
       const rowNumber = getNextResponseRow_(sheet, nameIndex, messageIndex);
       if (rowNumber > MAX_STORED_WISHES + 1) throw new Error("Guestbook storage limit reached");
       if (rowNumber > sheet.getMaxRows()) sheet.insertRowAfter(sheet.getMaxRows());
       sheet.getRange(rowNumber, 1, 1, row.length).setValues([row]);
       return json_({
         success: true,
+        rsvpSaved: hasRsvp,
         data: {
           id: `wish-${rowNumber}`,
           name,

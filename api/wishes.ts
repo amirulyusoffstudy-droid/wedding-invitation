@@ -1,3 +1,5 @@
+import { isValidRsvp, type Rsvp } from "../shared/rsvp";
+
 const GOOGLE_SCRIPT_URL = process.env.GOOGLE_WISHES_SCRIPT_URL;
 const GOOGLE_WRITE_SECRET = process.env.GOOGLE_WISHES_WRITE_SECRET;
 const IS_LOCAL_DEVELOPMENT = process.env.VERCEL_ENV === "development"
@@ -25,6 +27,8 @@ interface Wish {
 interface UpstreamResponse {
   success?: boolean;
   data?: unknown;
+  capabilities?: { rsvp?: boolean };
+  rsvpSaved?: boolean;
 }
 
 class PublicApiError extends Error {
@@ -53,6 +57,7 @@ let mockWishes: Wish[] = [
     createdAt: "2026-08-21T00:00:00.000Z",
   },
 ];
+let mockRsvps: Array<Rsvp & { name: string; createdAt: string }> = [];
 
 function isOriginAllowed(request: Request) {
   const origin = request.headers.get("Origin");
@@ -183,7 +188,12 @@ async function createWish(request: Request) {
     const name = cleanSingleLine(body.name);
     const message = cleanMessage(body.message);
     const relationship = cleanSingleLine(body.relationship);
-    if (!name || !message) throw new PublicApiError(400, "Nama dan ucapan diperlukan.");
+    const hasRsvp = body.attendance !== undefined || body.guestCount !== undefined;
+    const rsvp = { attendance: body.attendance, guestCount: body.guestCount };
+    if (hasRsvp && !isValidRsvp(rsvp)) {
+      throw new PublicApiError(400, "Status kehadiran atau bilangan tetamu tidak sah.");
+    }
+    if (!name || (!hasRsvp && !message)) throw new PublicApiError(400, "Nama dan ucapan diperlukan.");
     if (name.length > MAX_NAME_LENGTH || message.length > MAX_MESSAGE_LENGTH
       || relationship.length > MAX_RELATIONSHIP_LENGTH) {
       throw new PublicApiError(400, "Ucapan melebihi had aksara.");
@@ -197,19 +207,29 @@ async function createWish(request: Request) {
         relationship: relationship || undefined,
         createdAt: new Date().toISOString(),
       };
-      mockWishes = [wish, ...mockWishes].slice(0, MAX_PUBLIC_WISHES);
-      return jsonResponse(request, { success: true, data: wish }, 201);
+      if (message) mockWishes = [wish, ...mockWishes].slice(0, MAX_PUBLIC_WISHES);
+      if (hasRsvp && isValidRsvp(rsvp)) {
+        mockRsvps = [{ ...rsvp, name, createdAt: wish.createdAt }, ...mockRsvps].slice(0, 5000);
+      }
+      return jsonResponse(request, { success: true, data: message ? wish : undefined, rsvpSaved: hasRsvp }, 201);
     }
 
     if (!GOOGLE_WRITE_SECRET) throw new Error("Guestbook write secret is not configured");
+    if (hasRsvp) {
+      const capabilities = await requestGoogleScript();
+      if (!capabilities.success || !capabilities.capabilities?.rsvp) {
+        throw new Error("RSVP storage adapter must be updated before accepting submissions");
+      }
+    }
     const upstream = await requestGoogleScript({
       method: "POST",
       headers: { "Content-Type": "application/json" },
-      body: JSON.stringify({ name, message, relationship, writeSecret: GOOGLE_WRITE_SECRET }),
+      body: JSON.stringify({ name, message, relationship,
+        ...(hasRsvp ? rsvp : {}), writeSecret: GOOGLE_WRITE_SECRET }),
     });
     const wish = normalizeWish(upstream.data);
-    if (!upstream.success || !wish) throw new Error("Invalid response");
-    return jsonResponse(request, { success: true, data: wish }, 201);
+    if (!upstream.success || (message && !wish) || (hasRsvp && !upstream.rsvpSaved)) throw new Error("Invalid response");
+    return jsonResponse(request, { success: true, data: wish || undefined, rsvpSaved: upstream.rsvpSaved }, 201);
   } catch (error) {
     if (error instanceof PublicApiError) {
       return jsonResponse(request, { success: false, error: error.message }, error.status);

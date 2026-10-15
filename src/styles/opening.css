@@ -1,0 +1,213 @@
+﻿/* Design C opening card canonical layout. */
+.opening-cover {
+  position: fixed;
+  inset: 0;
+  z-index: 200;
+  height: 100dvh;
+  min-height: 100svh;
+  padding: 0;
+  overflow: hidden;
+  overscroll-behavior: none;
+  background: #fff7fb;
+  transition: 0.42s ease;
+}
+
+.opening-cover.is-opening {
+  opacity: 0;
+  transform: scale(1.025);
+  pointer-events: none;
+}
+
+.opening-card {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  display: block;
+  width: max(100vw, calc(100dvh * 1056 / 1489));
+  max-width: none;
+  height: max(100dvh, calc(100vw * 1489 / 1056));
+  min-height: 100dvh;
+  margin: 0 auto;
+  padding: 0;
+  border: 0;
+  background: url("../assets/design-c-paper.png") center / 100% 100% no-repeat;
+  box-shadow: none;
+  text-align: center;
+  transform: translate(-50%, -50%);
+  backdrop-filter: none;
+}
+
+.opening-heading,
+.opening-card .opening-monogram,
+.opening-details,
+.opening-card button {
+  position: absolute;
+  left: 50%;
+  margin: 0;
+  transform: translateX(-50%);
+}
+
+.opening-heading {
+  top: 22.6%;
+  width: min(78%, 360px);
+  display: grid;
+  gap: 0;
+  color: var(--gold-text);
+  font-family:
+    "Cormorant Garamond Variable", "Cormorant Garamond", Georgia,
+    "Times New Roman", serif;
+  font-weight: 400;
+  line-height: 1;
+  text-shadow: 0 1px 0 rgba(255, 255, 255, 0.65);
+}
+
+.opening-heading i {
+  font-family:
+    "Cormorant Garamond Variable", "Cormorant Garamond", Georgia,
+    "Times New Roman", serif;
+  font-size: clamp(1.95rem, 7.4vw, 2.78rem);
+  font-style: normal;
+  font-weight: 400;
+  line-height: 0.84;
+}
+
+.opening-heading span {
+  font-family:
+    "Cormorant Garamond Variable", "Cormorant Garamond", Georgia,
+    "Times New Roman", serif;
+  font-size: clamp(1.88rem, 7.2vw, 2.72rem);
+  font-weight: 400;
+  letter-spacing: -0.035em;
+  line-height: 0.84;
+  text-transform: none;
+  white-space: nowrap;
+}
+
+.opening-card .opening-monogram {
+  top: 36.2%;
+  display: grid;
+  justify-items: center;
+  width: min(82%, 390px);
+  gap: 2px;
+  color: var(--gold-text);
+  font-family: var(--script);
+  font-size: clamp(1.86rem, 7.15vw, 2.55rem);
+  line-height: 0.82;
+  letter-spacing: -0.025em;
+  text-shadow: 0 1px 0 rgba(255, 255, 255, 0.65);
+}
+
+.opening-card .opening-monogram i {
+  color: var(--gold-text);
+  font-family: var(--script);
+  font-size: 0.52em;
+  font-style: normal;
+  line-height: 0.55;
+  margin-block: -0.08em;
+}
+
+.opening-details {
+  top: 53.4%;
+  display: grid;
+  width: min(72%, 330px);
+  gap: 6px;
+  color: var(--gold-text);
+  font-family: var(--display);
+  line-height: 1.14;
+  text-align: center;
+}
+
+.opening-details time,
+.opening-details span {
+  display: block;
+  font-size: clamp(0.84rem, 2.9vw, 1rem);
+  font-weight: 700;
+  letter-spacing: 0.02em;
+  line-height: 1.14;
+}
+
+.opening-details em {
+  display: block;
+  margin-top: 12px;
+  font-size: clamp(0.8rem, 2.72vw, 0.96rem);
+  font-style: normal;
+  font-weight: 650;
+}
+
+.opening-card button {
+  top: 64.4%;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 9px;
+  width: min(56%, 300px);
+  min-height: 44px;
+  padding: 8px 18px;
+  border: 0;
+  border-radius: 999px;
+  background: rgba(242, 63, 154, 0.92);
+  color: #fff;
+  font-size: 0.84rem;
+  box-shadow: 0 14px 28px rgba(143, 43, 100, 0.2);
+}
+
+.opening-card button:not(:disabled):hover {
+  transform: translateX(-50%) translateY(-1px);
+}
+
+.opening-card button svg {
+  width: 1em;
+  height: 1em;
+}
+
+@media (max-width: 430px) {
+  .opening-heading {
+    top: 22.2%;
+  }
+
+  .opening-card .opening-monogram {
+    top: 36%;
+    width: min(82%, 370px);
+    font-size: clamp(1.78rem, 7.45vw, 2.48rem);
+  }
+
+  .opening-details {
+    top: 53.2%;
+  }
+
+  .opening-card button {
+    top: 64.3%;
+    width: min(57%, 280px);
+  }
+}
+
+@media (max-width: 380px), (max-height: 760px) {
+  .opening-heading {
+    top: 21.2%;
+  }
+
+  .opening-card .opening-monogram {
+    top: 34.7%;
+    font-size: clamp(1.58rem, 6.95vw, 2.16rem);
+  }
+
+  .opening-details {
+    top: 51.7%;
+  }
+
+  .opening-details time,
+  .opening-details span {
+    font-size: clamp(0.74rem, 2.65vw, 0.88rem);
+  }
+
+  .opening-details em {
+    margin-top: 8px;
+    font-size: clamp(0.7rem, 2.45vw, 0.84rem);
+  }
+
+  .opening-card button {
+    top: 62.8%;
+    min-height: 40px;
+    font-size: 0.78rem;
+  }
+}
