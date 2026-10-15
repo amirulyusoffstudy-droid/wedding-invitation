@@ -1,4 +1,4 @@
-import { isValidRsvp, type Rsvp } from "../shared/rsvp";
+import { isValidRsvp, type Rsvp } from "../shared/rsvp.js";
 
 const GOOGLE_SCRIPT_URL = process.env.GOOGLE_WISHES_SCRIPT_URL;
 const GOOGLE_WRITE_SECRET = process.env.GOOGLE_WISHES_WRITE_SECRET;
