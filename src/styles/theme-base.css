@@ -1,3 +1,4 @@
+﻿/* Theme refinements stay after component defaults so their precedence is explicit. */
 :root {
   --paper: #fbf6ea;
   --ink: #493b34;
@@ -9,7 +10,8 @@
   --vellum: rgba(255, 252, 244, 0.92);
   --vellum-solid: #fffaf0;
   --line: rgba(92, 73, 55, 0.24);
-  --display: "Cormorant Garamond Variable", "Cormorant Garamond", Georgia, serif;
+  --display:
+    "Cormorant Garamond Variable", "Cormorant Garamond", Georgia, serif;
 }
 
 body {
@@ -20,105 +22,62 @@ body {
   background: var(--paper);
 }
 
-.opening-cover {
-  grid-template-columns: minmax(0, 1fr);
-  padding-inline: 0;
-  background:
-    linear-gradient(rgba(251, 246, 234, 0.12), rgba(251, 246, 234, 0.12)),
-    var(--paper) url("./assets/botanical-paper.jpg") center / cover no-repeat;
-}
-
-.opening-card,
 .vellum-card,
 .closing-vellum {
   isolation: isolate;
-  border: 1px solid rgba(166, 139, 75, 0.62);
-  background: var(--vellum);
+  border: 1px solid rgba(166, 139, 75, 0.34);
+  background: rgba(255, 252, 244, 0.78);
   box-shadow:
-    0 24px 70px rgba(55, 40, 29, 0.22),
-    inset 0 0 0 7px rgba(255, 255, 255, 0.35);
-  backdrop-filter: blur(5px);
+    0 18px 54px rgba(55, 40, 29, 0.14),
+    inset 0 0 0 7px rgba(255, 255, 255, 0.22);
+  backdrop-filter: blur(4px);
 }
 
-.opening-card {
-  width: min(390px, calc(100% - 40px));
-  max-width: 390px;
-  justify-self: center;
-  padding: clamp(34px, 8vh, 58px) 28px 38px;
-}
-
-.opening-monogram {
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  gap: 8px;
-  margin-bottom: 20px;
-  color: var(--olive);
-  font: 500 clamp(3rem, 14vw, 4.5rem) / 0.85 var(--display);
-}
-
-.opening-monogram i {
-  color: var(--pink);
-  font-size: 0.55em;
-  font-weight: 400;
-}
-
-.opening-card > span,
 .kicker {
   color: var(--gold-text);
   font-weight: 600;
 }
 
-.opening-intro {
-  max-width: 285px;
-  margin: 18px auto 0;
-  font: italic 1.1rem / 1.55 var(--display);
-}
-
 .guest-name {
-  margin: 27px 0 22px;
+  gap: 3px;
+  margin: 23px 0 19px;
 }
 
 .guest-name strong {
   font-family: var(--display);
-  font-size: 1.45rem;
+  font-size: 1.35rem;
   font-weight: 600;
 }
 
-.opening-card button {
-  min-width: min(100%, 220px);
-  border-radius: 999px;
-  box-shadow: 0 10px 24px rgba(73, 59, 52, 0.2);
-}
-
 .invite-page {
-  padding: clamp(52px, 10vh, 92px) clamp(20px, 7vw, 48px) 130px;
+  padding: clamp(48px, 9vh, 84px) clamp(20px, 7vw, 48px) 124px;
 }
 
 .title-page {
   background:
     linear-gradient(rgba(251, 246, 234, 0.08), rgba(251, 246, 234, 0.08)),
-    var(--paper) url("./assets/botanical-paper.jpg") center / cover no-repeat;
+    var(--paper) url("../assets/botanical-paper.jpg") center / cover no-repeat;
 }
 
 .vellum-card {
   max-width: 510px;
-  padding: clamp(36px, 8vw, 62px) clamp(25px, 7vw, 54px);
+  padding: clamp(32px, 7vw, 56px) clamp(23px, 6vw, 50px);
 }
 
 .title-page .theme-line {
   max-width: 330px;
-  margin: 12px auto 0;
+  margin: 9px auto 0;
   color: var(--muted);
   font-family: var(--display);
-  font-size: 1.08rem;
+  font-size: 1rem;
+  line-height: 1.42;
 }
 
 .title-page h1 {
-  gap: 4px;
-  margin: 28px -8px 22px;
+  gap: 1px;
+  margin: 22px -8px 17px;
   color: var(--olive);
-  font: 600 clamp(2.25rem, 9.5vw, 4.25rem) / 0.92 var(--display);
+  font: 600 clamp(2.12rem, 9vw, 4.1rem) / 0.88 var(--display);
   letter-spacing: -0.025em;
   text-wrap: balance;
 }
@@ -128,7 +87,7 @@ body {
 }
 
 .title-page h1 i {
-  margin: 8px;
+  margin: 5px;
   color: var(--pink);
   font-size: 0.58em;
   line-height: 1;
@@ -137,7 +96,7 @@ body {
 .gold-rule {
   position: relative;
   width: 82px;
-  margin: 24px auto;
+  margin: 19px auto;
   background: var(--gold);
 }
 
@@ -155,48 +114,52 @@ body {
 
 .hero-meta {
   display: grid;
-  gap: 7px;
+  gap: 5px;
 }
 
 .hero-meta time {
   color: var(--ink);
-  font: 600 1.28rem / 1.2 var(--display);
+  font: 600 1.18rem / 1.16 var(--display);
   letter-spacing: 0.08em;
 }
 
 .hero-meta strong {
   color: var(--muted);
-  font-size: 0.78rem;
+  font-size: 0.74rem;
   letter-spacing: 0.12em;
   text-transform: uppercase;
 }
 
 .title-page .quote {
   max-width: 335px;
-  margin: 27px auto 16px;
+  margin: 22px auto 14px;
   color: var(--ink);
-  font: italic 1.08rem / 1.6 var(--display);
+  font: italic 1rem / 1.45 var(--display);
 }
 
 .share-button {
   border-color: rgba(73, 59, 52, 0.58);
   border-radius: 999px;
-  background: rgba(255, 255, 255, 0.32);
+  background: rgba(255, 255, 255, 0.18);
 }
 
 .formal-page,
 .details-page {
   background:
     radial-gradient(circle at 0 0, rgba(197, 125, 145, 0.09), transparent 28%),
-    radial-gradient(circle at 100% 100%, rgba(166, 139, 75, 0.1), transparent 30%),
+    radial-gradient(
+      circle at 100% 100%,
+      rgba(166, 139, 75, 0.1),
+      transparent 30%
+    ),
     #f8f1e6;
 }
 
 .formal-sheet,
 .event-sheet {
   max-width: 470px;
-  padding: clamp(32px, 7vw, 52px) clamp(8px, 4vw, 28px);
-  border-block: 1px solid rgba(166, 139, 75, 0.46);
+  padding: clamp(28px, 6vw, 46px) clamp(8px, 4vw, 28px);
+  border-block: 1px solid rgba(166, 139, 75, 0.28);
 }
 
 .formal-sheet::before,
@@ -210,11 +173,11 @@ body {
 }
 
 .formal-sheet::before {
-  margin-bottom: 31px;
+  margin-bottom: 25px;
 }
 
 .formal-sheet::after {
-  margin-top: 31px;
+  margin-top: 25px;
 }
 
 .arabic {
@@ -251,16 +214,16 @@ body {
 
 .event-facts {
   gap: 0;
-  margin: 34px 0;
+  margin: 28px 0;
 }
 
 .event-facts div {
-  padding: 18px 6px;
-  border-bottom: 1px solid var(--line);
+  padding: 14px 6px;
+  border-bottom: 1px solid rgba(92, 73, 55, 0.15);
 }
 
 .event-facts div:first-child {
-  border-top: 1px solid var(--line);
+  border-top: 1px solid rgba(92, 73, 55, 0.15);
 }
 
 .event-facts dt {
@@ -270,8 +233,9 @@ body {
 
 .event-facts dd {
   color: var(--ink);
-  font-size: 1.28rem;
+  font-size: 1.18rem;
   font-weight: 500;
+  line-height: 1.28;
 }
 
 .calendar-button {
@@ -279,20 +243,31 @@ body {
 }
 
 .programme-card {
-  border-color: rgba(166, 139, 75, 0.42);
-  background: rgba(255, 252, 244, 0.72);
-  box-shadow: 0 18px 45px rgba(73, 59, 52, 0.1);
+  margin-top: 34px;
+  padding: 26px 20px;
+  border-color: rgba(166, 139, 75, 0.24);
+  background: rgba(255, 252, 244, 0.48);
+  box-shadow: 0 12px 32px rgba(73, 59, 52, 0.06);
+}
+
+.programme-card h3 {
+  margin-bottom: 20px;
+}
+
+.programme-card div {
+  margin: 14px;
 }
 
 .prayer-page {
   background:
     linear-gradient(rgba(251, 246, 234, 0.12), rgba(251, 246, 234, 0.12)),
-    var(--paper) url("./assets/botanical-paper.jpg") center bottom / cover no-repeat;
+    var(--paper) url("../assets/botanical-paper.jpg") center bottom / cover
+      no-repeat;
 }
 
 .closing-vellum {
   max-width: 500px;
-  padding: clamp(34px, 8vw, 58px) clamp(24px, 7vw, 48px);
+  padding: clamp(30px, 7vw, 52px) clamp(22px, 6vw, 44px);
 }
 
 .prayer-page .closing-names,
@@ -301,16 +276,80 @@ body {
   font-weight: 600;
 }
 
+.formal-page .page-content > p,
+.blessing,
+.prayer,
+.prayer-page .page-content > p {
+  font-size: 0.96rem;
+  line-height: 1.45;
+}
+
+.parent-names,
+.formal-couple {
+  gap: 6px;
+  margin: 24px auto;
+  line-height: 1.18;
+}
+
+.formal-couple {
+  margin: 28px auto;
+  font-size: clamp(1.68rem, 6.4vw, 2.32rem);
+}
+
+.invite-page h2 {
+  font-size: 2.25rem;
+}
+
+.prayer-heart {
+  margin: 20px;
+}
+
+.prayer-page .closing-names {
+  margin-top: 28px;
+  font-size: 2.12rem;
+}
+
+.panel,
+.contact-list article,
+.gift-list article,
+.wish-form,
+.wish-card,
+.wish-state {
+  border-color: rgba(92, 73, 55, 0.14);
+  background-color: rgba(255, 252, 244, 0.62);
+}
+
+.panel {
+  background: rgba(246, 236, 223, 0.9);
+}
+
+.panel > header {
+  background: rgba(246, 236, 223, 0.82);
+  border-bottom-color: rgba(92, 73, 55, 0.14);
+}
+
 .is-opened .vellum-card > * {
   animation: invitation-reveal 0.7s both cubic-bezier(0.22, 1, 0.36, 1);
 }
 
-.is-opened .vellum-card > :nth-child(2) { animation-delay: 0.07s; }
-.is-opened .vellum-card > :nth-child(3) { animation-delay: 0.14s; }
-.is-opened .vellum-card > :nth-child(4) { animation-delay: 0.21s; }
-.is-opened .vellum-card > :nth-child(5) { animation-delay: 0.28s; }
-.is-opened .vellum-card > :nth-child(6) { animation-delay: 0.35s; }
-.is-opened .vellum-card > :nth-child(7) { animation-delay: 0.42s; }
+.is-opened .vellum-card > :nth-child(2) {
+  animation-delay: 0.07s;
+}
+.is-opened .vellum-card > :nth-child(3) {
+  animation-delay: 0.14s;
+}
+.is-opened .vellum-card > :nth-child(4) {
+  animation-delay: 0.21s;
+}
+.is-opened .vellum-card > :nth-child(5) {
+  animation-delay: 0.28s;
+}
+.is-opened .vellum-card > :nth-child(6) {
+  animation-delay: 0.35s;
+}
+.is-opened .vellum-card > :nth-child(7) {
+  animation-delay: 0.42s;
+}
 
 @keyframes invitation-reveal {
   from {
@@ -320,10 +359,6 @@ body {
 }
 
 @media (max-width: 380px) {
-  .opening-card {
-    padding-inline: 20px;
-  }
-
   .vellum-card {
     padding-inline: 20px;
   }
@@ -337,7 +372,6 @@ body {
   .invite-page {
     padding: 68px 62px 104px;
   }
-
 }
 
 @media (prefers-reduced-motion: reduce) {
@@ -345,3 +379,4 @@ body {
     animation: none;
   }
 }
+

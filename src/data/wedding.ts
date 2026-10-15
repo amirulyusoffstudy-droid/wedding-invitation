@@ -71,7 +71,7 @@ export const wedding = {
     { src: publicAsset("couple-engagement-ring.jpg"), alt: "Erni dan Amirul meraikan pertunangan mereka", position: "center 55%" },
   ],
   wishes: {
-    apiUrl: import.meta.env.VITE_WISHES_API_URL || "https://erni-amirul.vercel.app/api/wishes",
+    apiUrl: import.meta.env.VITE_WISHES_API_URL || "/api/wishes",
     message: "Titipkan doa dan ucapan buat kami tanpa meninggalkan jemputan ini.",
   },
   contacts: [
@@ -86,7 +86,7 @@ export const wedding = {
     { question: "Adakah kanak-kanak dijemput?", answer: "[JAWAPAN PLACEHOLDER]" },
     { question: "Bolehkah saya membawa teman?", answer: "[JAWAPAN PLACEHOLDER]" },
     { question: "Adakah tempat letak kereta disediakan?", answer: "[JAWAPAN PLACEHOLDER]" },
-    { question: "Perlukah saya mengesahkan kehadiran?", answer: "Tidak. Majlis ini tidak memerlukan pengesahan kehadiran." },
+    { question: "Perlukah saya mengesahkan kehadiran?", answer: "Sila tekan RSVP untuk mengesahkan kehadiran dan bilangan tetamu. Anda juga boleh menitipkan ucapan dalam borang yang sama." },
     { question: "Bagaimana saya boleh menghubungi pihak keluarga?", answer: "Tekan menu Hubungi di bahagian bawah skrin untuk menghubungi wakil keluarga." },
   ],
   gifts: {
@@ -111,7 +111,7 @@ export const wedding = {
   },
   music: {
     enabled: true,
-    src: `${import.meta.env.BASE_URL}sound/Blue%20-%20Yung%20Kai%20(Wedding%20Entrance%20Ver.).mp3`,
+    src: `${import.meta.env.BASE_URL}sound/Spring%20Snow%20(Instrumental)%20-%2010CM.mp3`,
     loop: true,
     volume: 0.2,
   },
