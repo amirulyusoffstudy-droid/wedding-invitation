@@ -15,9 +15,11 @@ import { wedding } from "./data/wedding";
 import { InvitationPages } from "./components/InvitationPages";
 import { ActionLink, Panel } from "./components/Panel";
 import { WishesPanel } from "./components/WishesPanel";
+import { GuestbookSection } from "./components/GuestbookSection";
+import { GuestbookProvider } from "./guestbook/GuestbookProvider";
 import { downloadCalendar } from "./utils/calendar";
 
-type PanelName = "contact" | "location" | "gift" | "wishes" | "rsvp";
+type PanelName = "contact" | "location" | "gift" | "rsvp";
 const isConfigured = (value: string) =>
   Boolean(value && !value.includes("PLACEHOLDER"));
 const OPENING_DURATION_MS = 420;
@@ -148,6 +150,7 @@ export default function App() {
   };
 
   return (
+    <GuestbookProvider apiUrl={wedding.wishes.apiUrl} enabled={opened}>
     <div className="invitation-app design-d">
       {wedding.music.enabled ? (
         <audio
@@ -200,6 +203,7 @@ export default function App() {
             if (!downloadCalendar()) showToast("Kalendar belum dapat dijana");
           }}
         />
+        <GuestbookSection />
       </main>
 
       {opened && (
@@ -219,10 +223,6 @@ export default function App() {
           <button onClick={() => setPanel("gift")}>
             <Gift aria-hidden="true" />
             <span>Hadiah</span>
-          </button>
-          <button onClick={() => setPanel("wishes")}>
-            <MessageCircle aria-hidden="true" />
-            <span>Ucapan</span>
           </button>
           <button onClick={() => setPanel("rsvp")}>
             <UserCheck aria-hidden="true" />
@@ -341,12 +341,18 @@ export default function App() {
         </Panel>
       )}
 
-      {(panel === "wishes" || panel === "rsvp") && (
+      {panel === "rsvp" && (
         <Panel title="RSVP & Ucapan" close={closePanel}>
           <WishesPanel
-            apiUrl={wedding.wishes.apiUrl}
             message={wedding.wishes.message}
-            initialSection={panel === "wishes" ? "wishes" : "form"}
+            onWishSubmitted={() => {
+              setPanel(null);
+              requestAnimationFrame(() => {
+                const guestbook = document.getElementById("ucapan-tetamu");
+                guestbook?.focus({ preventScroll: true });
+                guestbook?.scrollIntoView({ block: "start", behavior: "auto" });
+              });
+            }}
           />
         </Panel>
       )}
@@ -357,5 +363,6 @@ export default function App() {
         </div>
       )}
     </div>
+    </GuestbookProvider>
   );
 }

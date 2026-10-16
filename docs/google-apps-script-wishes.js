@@ -157,7 +157,7 @@ function doPost(event) {
     const hasRsvp = payload.attendance !== undefined || payload.guestCount !== undefined;
     if (hasRsvp) {
       const validAttendance = payload.attendance === "attending"
-        && Number.isInteger(payload.guestCount) && payload.guestCount >= 1 && payload.guestCount <= 5;
+        && Number.isInteger(payload.guestCount) && payload.guestCount >= 1 && payload.guestCount <= 3;
       const validDecline = payload.attendance === "not-attending" && payload.guestCount === 0;
       if (!validAttendance && !validDecline) throw new Error("RSVP tidak sah.");
     }

@@ -27,6 +27,7 @@ describe("combined RSVP API", () => {
   it.each([
     { attendance: "maybe", guestCount: 1 },
     { attendance: "attending", guestCount: 0 },
+    { attendance: "attending", guestCount: 4 },
     { attendance: "attending", guestCount: 6 },
     { attendance: "attending", guestCount: 1.5 },
     { attendance: "attending", guestCount: "2" },

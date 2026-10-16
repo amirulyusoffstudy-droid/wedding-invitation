@@ -738,7 +738,7 @@ body:has(.opening-cover) {
 }
 
 .design-d .bottom-menu {
-  grid-template-columns: repeat(5, minmax(0, 1fr));
+  grid-template-columns: repeat(4, minmax(0, 1fr));
   background: rgba(247, 243, 235, 0.94);
   border-top: 1px solid rgba(217, 90, 115, 0.24);
 }

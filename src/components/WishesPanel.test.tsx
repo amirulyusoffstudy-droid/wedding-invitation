@@ -3,7 +3,13 @@
 import { act } from "react";
 import { createRoot } from "react-dom/client";
 import { afterEach, describe, expect, it, vi } from "vitest";
-import { WishesPanel } from "./WishesPanel";
+import { WishesPanel as RsvpForm } from "./WishesPanel";
+import { GuestbookProvider } from "../guestbook/GuestbookProvider";
+import { GuestbookSection } from "./GuestbookSection";
+
+function WishesPanel({ apiUrl, message }: { apiUrl: string; message: string }) {
+  return <GuestbookProvider apiUrl={apiUrl}><RsvpForm message={message} /><GuestbookSection /></GuestbookProvider>;
+}
 
 const testGlobal = globalThis as typeof globalThis & {
   IS_REACT_ACT_ENVIRONMENT: boolean;
@@ -78,6 +84,8 @@ describe("WishesPanel", () => {
     };
     await setValue('[name="name"]', "Guest");
     await setValue('[name="attendance"]', "attending");
+    expect([...container.querySelectorAll<HTMLOptionElement>('[name="guestCount"] option')]
+      .map((option) => option.value)).toEqual(["1", "2", "3"]);
     await setValue('[name="guestCount"]', "3");
     await setValue('[name="message"]', "Selamat pengantin baru!");
     await act(async () => {
@@ -88,9 +96,9 @@ describe("WishesPanel", () => {
     expect(JSON.parse(String(fetchSpy.mock.calls[1][1]?.body))).toMatchObject({
       name: "Guest", attendance: "attending", guestCount: 3, message: "Selamat pengantin baru!",
     });
-    expect(container.querySelector(".wish-card")?.textContent).toContain("Selamat pengantin baru!");
+    expect(container.querySelector(".guestbook-slide")?.textContent).toContain("Selamat pengantin baru!");
     expect(container.querySelector(".is-success")?.textContent).toContain("RSVP berjaya disimpan");
-    expect(container.querySelector(".wish-wall")?.textContent).not.toContain("guestCount");
+    expect(container.querySelector(".design-d-guestbook")?.textContent).not.toContain("guestCount");
     await act(async () => root.unmount());
   });
 
@@ -119,7 +127,7 @@ describe("WishesPanel", () => {
       attendance: "not-attending", guestCount: 0, message: "",
     });
     expect(container.querySelector(".is-success")).not.toBeNull();
-    expect(container.querySelector(".wish-card")).toBeNull();
+    expect(container.querySelector(".guestbook-slide")).toBeNull();
     await act(async () => root.unmount());
   });
 });

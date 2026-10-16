@@ -28,6 +28,7 @@ describe("App invitation opening", () => {
       })),
     );
     vi.spyOn(HTMLMediaElement.prototype, "play").mockResolvedValue();
+    vi.spyOn(globalThis, "fetch").mockResolvedValue(Response.json({ success: true, data: [] }));
     Object.defineProperty(HTMLElement.prototype, "scrollIntoView", {
       configurable: true,
       value: vi.fn(),
@@ -63,6 +64,8 @@ describe("App invitation opening", () => {
 
     expect(document.activeElement?.id).toBe("jemputan");
     expect(sessionStorage.getItem("invitation-opened")).toBe("true");
+    expect([...container.querySelectorAll(".bottom-menu button")]
+      .map((button) => button.textContent)).toEqual(["Hubungi", "Lokasi", "Hadiah", "RSVP"]);
 
     await act(async () => root.unmount());
   });

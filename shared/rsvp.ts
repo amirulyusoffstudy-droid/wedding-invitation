@@ -5,7 +5,7 @@ export interface Rsvp {
   guestCount: number;
 }
 
-export const MAX_GUEST_COUNT = 5;
+export const MAX_GUEST_COUNT = 3;
 
 export function isValidRsvp(value: unknown): value is Rsvp {
   if (!value || typeof value !== "object") return false;

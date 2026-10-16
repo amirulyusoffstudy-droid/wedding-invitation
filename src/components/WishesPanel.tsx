@@ -1,25 +1,11 @@
-import { useEffect, useId, useRef, useState } from "react";
-import { Heart, LoaderCircle, RefreshCw, Send } from "lucide-react";
+import { useId, useState } from "react";
+import { Heart, LoaderCircle, Send } from "lucide-react";
 import { isValidRsvp, MAX_GUEST_COUNT, type Attendance } from "../../shared/rsvp";
-
-interface Wish {
-  id: string;
-  name: string;
-  message: string;
-  relationship?: string;
-  createdAt: string;
-}
+import { useGuestbook, type Wish } from "../guestbook/GuestbookContext";
 
 interface WishesPanelProps {
-  apiUrl: string;
   message: string;
-  initialSection?: "form" | "wishes";
-}
-
-interface WishesResponse {
-  success: boolean;
-  data?: Wish[];
-  error?: string;
+  onWishSubmitted?: () => void;
 }
 
 interface WishFormData {
@@ -30,17 +16,10 @@ interface WishFormData {
 }
 
 type FieldErrors = Partial<Record<keyof WishFormData, string>>;
-type LoadStatus = "loading" | "ready" | "error";
 type SubmitStatus = "idle" | "submitting" | "success" | "error";
 
 const EMPTY_FORM: WishFormData = { name: "", message: "", attendance: "", guestCount: "1" };
-const REQUEST_TIMEOUT_MS = 10_000;
 const SUBMISSION_TIMEOUT_MS = 25_000;
-const dateFormatter = new Intl.DateTimeFormat("ms-MY", {
-  day: "numeric",
-  month: "short",
-  year: "numeric",
-});
 
 function getFieldError(field: keyof WishFormData, value: string) {
   const trimmedValue = value.trim();
@@ -55,65 +34,15 @@ function getFieldError(field: keyof WishFormData, value: string) {
   return "";
 }
 
-function formatWishDate(value: string) {
-  const date = new Date(value);
-  return Number.isNaN(date.getTime()) ? "" : dateFormatter.format(date);
-}
-
-export function WishesPanel({ apiUrl, message, initialSection = "form" }: WishesPanelProps) {
+export function WishesPanel({ message, onWishSubmitted }: WishesPanelProps) {
+  const { apiUrl, addWish } = useGuestbook();
   const nameId = useId();
   const messageId = useId();
   const attendanceId = useId();
   const guestCountId = useId();
-  const wallRef = useRef<HTMLElement>(null);
-  const loadControllerRef = useRef<AbortController | null>(null);
   const [formData, setFormData] = useState<WishFormData>(EMPTY_FORM);
   const [fieldErrors, setFieldErrors] = useState<FieldErrors>({});
-  const [wishes, setWishes] = useState<Wish[]>([]);
-  const [loadStatus, setLoadStatus] = useState<LoadStatus>("loading");
   const [submitStatus, setSubmitStatus] = useState<SubmitStatus>("idle");
-  const [reloadKey, setReloadKey] = useState(0);
-
-  useEffect(() => {
-    if (initialSection === "wishes") {
-      wallRef.current?.scrollIntoView?.({ block: "start" });
-      wallRef.current?.focus({ preventScroll: true });
-    }
-  }, [initialSection]);
-
-  useEffect(() => {
-    const controller = new AbortController();
-    loadControllerRef.current = controller;
-
-    async function loadWishes() {
-      setLoadStatus("loading");
-      let didTimeout = false;
-      const timeoutId = window.setTimeout(() => {
-        didTimeout = true;
-        controller.abort();
-      }, REQUEST_TIMEOUT_MS);
-      try {
-        const response = await fetch(apiUrl, {
-          signal: controller.signal,
-          cache: "no-store",
-        });
-        const result = (await response.json()) as WishesResponse;
-        if (!response.ok || !result.success || !Array.isArray(result.data)) {
-          throw new Error(result.error || "Ucapan tidak dapat dimuatkan");
-        }
-        setWishes(result.data);
-        setLoadStatus("ready");
-      } catch (error) {
-        if ((error as DOMException).name !== "AbortError" || didTimeout)
-          setLoadStatus("error");
-      } finally {
-        window.clearTimeout(timeoutId);
-      }
-    }
-
-    void loadWishes();
-    return () => controller.abort();
-  }, [apiUrl, reloadKey]);
 
   const updateField = (field: keyof WishFormData, value: string) => {
     setFormData((current) => ({ ...current, [field]: value }));
@@ -180,17 +109,12 @@ export function WishesPanel({ apiUrl, message, initialSection = "form" }: Wishes
       }
       const submittedWish = result.data;
       if (submittedWish?.message) {
-        loadControllerRef.current?.abort();
-        setWishes((current) => [submittedWish, ...current.filter((wish) => wish.id !== submittedWish.id)]);
-        setLoadStatus("ready");
+        addWish(submittedWish);
       }
       setFormData(EMPTY_FORM);
       setSubmitStatus("success");
       if (submittedWish?.message) {
-        requestAnimationFrame(() => {
-          wallRef.current?.scrollIntoView?.({ block: "start", behavior: "auto" });
-          wallRef.current?.focus({ preventScroll: true });
-        });
+        onWishSubmitted?.();
       }
     } catch {
       setSubmitStatus("error");
@@ -323,7 +247,7 @@ export function WishesPanel({ apiUrl, message, initialSection = "form" }: Wishes
         <div className="wish-feedback" aria-live="polite">
           {submitStatus === "success" ? (
             <p className="is-success">
-              RSVP berjaya disimpan. Jika anda menulis ucapan, ia telah dipaparkan di bawah.
+              RSVP berjaya disimpan. Ucapan anda dipaparkan di bahagian Ucapan Tetamu pada akhir jemputan.
             </p>
           ) : null}
           {submitStatus === "error" ? (
@@ -334,56 +258,6 @@ export function WishesPanel({ apiUrl, message, initialSection = "form" }: Wishes
         </div>
       </form>
 
-      <section ref={wallRef} tabIndex={-1} className="wish-wall" aria-labelledby="wish-wall-title">
-        <div className="wish-wall-heading">
-          <div>
-            <small>Daripada keluarga & sahabat</small>
-            <h3 id="wish-wall-title">Ucapan Tetamu</h3>
-          </div>
-          <button
-            type="button"
-            onClick={() => setReloadKey((key) => key + 1)}
-            aria-label="Muat semula ucapan"
-          >
-            <RefreshCw aria-hidden="true" />
-          </button>
-        </div>
-
-        {loadStatus === "loading" ? (
-          <p className="wish-state">Memuatkan ucapan…</p>
-        ) : null}
-        {loadStatus === "error" ? (
-          <div className="wish-state">
-            <p>Ucapan belum dapat dimuatkan.</p>
-            <button
-              type="button"
-              onClick={() => setReloadKey((key) => key + 1)}
-            >
-              Cuba lagi
-            </button>
-          </div>
-        ) : null}
-        {loadStatus === "ready" && wishes.length === 0 ? (
-          <p className="wish-state">
-            Jadilah tetamu pertama yang menitipkan ucapan.
-          </p>
-        ) : null}
-        {loadStatus === "ready"
-          ? wishes.map((wish) => (
-              <article className="wish-card" key={wish.id}>
-                <p>{wish.message}</p>
-                <footer>
-                  <strong>{wish.name}</strong>
-                  <span>
-                    {[wish.relationship, formatWishDate(wish.createdAt)]
-                      .filter(Boolean)
-                      .join(" · ")}
-                  </span>
-                </footer>
-              </article>
-            ))
-          : null}
-      </section>
     </div>
   );
 }

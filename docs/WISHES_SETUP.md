@@ -5,7 +5,7 @@
 The `feature/rsvp-ucapan` branch adds attendance and guest count to the same
 submission as an optional wish. Only names and wishes are returned publicly.
 Attendance and guest counts stay in the response Sheet. Attending guests can
-select 1–5 people including themselves; declining guests are recorded as zero.
+select 1–3 people including themselves; declining guests are recorded as zero.
 
 Before deploying this branch, update the existing Apps Script web app with
 `docs/google-apps-script-wishes.js`: save the script, then use **Deploy > Manage
@@ -61,6 +61,6 @@ write-secret environment variable. This ordering prevents submission downtime.
 ## Public wishes
 
 New wishes are displayed automatically. The invitation refreshes wishes whenever
-the Ucapan panel opens or the refresh button is pressed. New rows are positioned
+the RSVP panel opens or the refresh button is pressed. New rows are positioned
 from actual response content, so formatting or empty table rows cannot push them
 far down the spreadsheet.

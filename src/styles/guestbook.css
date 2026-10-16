@@ -1,0 +1,112 @@
+.design-d-guestbook {
+  position: relative;
+  width: 100%;
+  padding: clamp(48px, 10vw, 72px) 10% 48px;
+  background: var(--design-d-paper) url("../assets/WEDDING CARD ERNI & AMIRUL 3.png") center top / 100% auto repeat-y;
+  color: var(--design-d-green);
+  font-family: "Cormorant Garamond Variable", "Cormorant Garamond", Georgia, serif;
+  text-align: center;
+}
+
+.design-d-guestbook .guestbook-heart {
+  width: 18px;
+  height: 18px;
+  color: var(--design-d-pink);
+  fill: currentColor;
+}
+
+.design-d-guestbook h2 {
+  margin: 12px 0 8px;
+  font-family: "Allura", cursive;
+  font-size: clamp(2.25rem, 8vw, 3.2rem);
+  font-weight: 400;
+  line-height: 1.2;
+}
+
+.guestbook-caption {
+  margin: 0 0 28px;
+  font-size: 1rem;
+}
+
+.guestbook-stage {
+  display: grid;
+  align-items: center;
+  min-height: 180px;
+}
+
+.guestbook-slide {
+  padding: 18px 10px;
+  animation: guestbook-enter 500ms ease-out both;
+}
+
+.guestbook-slide blockquote {
+  margin: 0;
+  color: #1f1b17;
+  font-size: clamp(1.05rem, 3.7vw, 1.3rem);
+  line-height: 1.5;
+  white-space: pre-wrap;
+  overflow-wrap: anywhere;
+}
+
+.guestbook-author {
+  margin: 20px 0 0;
+  font-size: 1.05rem;
+  font-weight: 600;
+  overflow-wrap: anywhere;
+}
+
+.guestbook-controls,
+.guestbook-dots,
+.guestbook-playback {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.guestbook-controls { margin-top: 20px; }
+.guestbook-playback { gap: 8px; font-size: 0.9rem; }
+
+.guestbook-controls button,
+.guestbook-playback button {
+  display: inline-grid;
+  place-items: center;
+  width: 44px;
+  min-height: 44px;
+  padding: 0;
+  border: 0;
+  background: transparent;
+  color: var(--design-d-green);
+}
+
+.guestbook-controls svg { width: 18px; height: 18px; }
+.guestbook-playback svg { width: 14px; height: 14px; }
+
+.guestbook-dots button { width: clamp(28px, 8vw, 44px); }
+.guestbook-dots span {
+  width: 6px;
+  height: 6px;
+  border: 1px solid var(--design-d-green);
+  border-radius: 50%;
+  transition: background-color 180ms ease;
+}
+.guestbook-dots [aria-current="true"] span { background: var(--design-d-green); }
+.guestbook-state button {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  min-height: 44px;
+  border: 1px solid currentColor;
+  background: transparent;
+  color: inherit;
+}
+.guestbook-state svg { width: 16px; height: 16px; }
+
+@keyframes guestbook-enter {
+  from { opacity: 0; transform: translateY(6px); }
+  to { opacity: 1; transform: translateY(0); }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .guestbook-slide { animation: none; }
+  .guestbook-dots span { transition: none; }
+}

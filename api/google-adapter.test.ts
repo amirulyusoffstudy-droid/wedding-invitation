@@ -66,6 +66,12 @@ describe("Google Sheet RSVP adapter", () => {
     expect(rows).toHaveLength(1);
   });
 
+  it("rejects more than three attending guests without saving a row", () => {
+    const { rows, submit } = createAdapter();
+    expect(submit({ name: "Guest", attendance: "attending", guestCount: 4 }).success).toBe(false);
+    expect(rows).toHaveLength(1);
+  });
+
   it("keeps existing wishes visible after many RSVP-only responses", () => {
     const { adapter, submit } = createAdapter();
     submit({ name: "Guest", message: "Tahniah!", attendance: "attending", guestCount: 1 });
